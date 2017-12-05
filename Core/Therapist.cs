@@ -19,6 +19,7 @@ namespace Core
         public List<string> Fachgebiete { get; set; } = new List<string>();
         public List<string> BesondereKenntnisse { get; set; } = new List<string>();
         public List<string> Zusatzbezeichnung { get; set; } = new List<string>();
+        public List<TelefoneNumber> TelefoneNumbers { get; set; } = new List<TelefoneNumber>();
         [XmlAttribute]
         public long ID { get; set; }
         public List<Office> Offices { get; set; } = new List<Office>();

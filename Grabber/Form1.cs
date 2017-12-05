@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,25 +23,6 @@ namespace Grabber
         {
             InitializeComponent();
 
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Therapist>));
-
-            // ReSharper disable once RedundantAssignment
-            bool b = false;
-            // ReSharper disable once RedundantAssignment
-            List<Therapist> therapists = new List<Therapist>();
-
-#if LOAD
-            b = true;
-            using (var fs = new FileStream(Path.Combine(Application.StartupPath, "Therapists", "therapists.psycho"), FileMode.Open))
-            {
-                therapists = (List<Therapist>)xmlSerializer.Deserialize(fs);
-            }
-#endif
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (b)
-            {
-                Console.WriteLine(therapists.Count);
-            }
             var task = Task.Run(() => Analyze());
             task.ContinueWith(x =>
                               {
@@ -70,24 +52,12 @@ namespace Grabber
 
             string folder = Path.Combine(Application.StartupPath, "Websites");
             var files = Directory.GetFiles(folder).OrderBy(t => new FileInfo(t).Name).ToArray();
-            double step = 100.0 / files.Length;
             var startNew = Stopwatch.StartNew();
             for (var i = 0; i < files.Length; i++)
             {
                 var file = files[i];
                 WaitForLoad.Reset();
-                var analyzedFiles = AnalyzeFile(file);
-                int j = 0;
-                foreach (var analyzedFile in analyzedFiles)
-                {
-                    therapists.Add(analyzedFile);
-                    var i1 = i;
-                    Dispatch(() =>
-                             {
-                                 double progress = i1 * step + j++ * step / 10;
-                                 progressBar1.Value = (int)(progress * 100);
-                             });
-                }
+                AnalyzeFile(file);
             }
             startNew.Stop();
             Debug.WriteLine(startNew.ElapsedMilliseconds);
@@ -100,7 +70,8 @@ namespace Grabber
                 xmlSerializer.Serialize(fs, therapists);
             }
         }
-        private IEnumerable<Therapist> AnalyzeFile(string file)
+
+        private void AnalyzeFile(string file)
         {
             Task.Delay(500).Wait();
             Dispatch(() => webBrowser1.Navigate(file));
@@ -112,16 +83,48 @@ namespace Grabber
                          Debug.Assert(webBrowser1.Document != null, "webBrowser1.Document != null");
                          detailLinks = (webBrowser1.Document.GetElementsByTagName("input").OfType<HtmlElement>().Where(o => o.GetAttribute("name") == "arztId" && o.GetAttribute("id") == "detailAction_arztId").Select(o => "http://www.arztauskunft-niedersachsen.de/arztsuche/detailAction.action?arztId=" + o.GetAttribute("value"))).ToArray();
                      });
-
             foreach (var detailLink in detailLinks)
             {
-                yield return AnalyzePage(detailLink);
+                AnalyzePage(detailLink);
             }
         }
 
 
-        private Therapist AnalyzePage(string detailLink)
+        private void AnalyzePage(string detailLink)
         {
+            try
+            {
+                WebRequest webRequest = WebRequest.Create(detailLink);
+                var webResponse = webRequest.GetResponse();
+                var responseStream = webResponse.GetResponseStream();
+
+                Debug.Assert(responseStream != null, "responseStream != null");
+                using (var sr = new StreamReader(responseStream))
+                {
+                    var siteSource = sr.ReadToEnd();
+                    string path = Path.Combine(Application.StartupPath, "TherapistSites");
+                    if (!Directory.Exists(path))
+                        Directory.CreateDirectory(path);
+                    string fileName = detailLink.Substring(detailLink.LastIndexOf('=') + 1);
+                    path = Path.Combine(path, fileName);
+                    while (File.Exists(path + ".psycho"))
+                        path += "x";
+                    using (var fs = new FileStream(path + ".psycho", FileMode.CreateNew))
+                    {
+                        using (StreamWriter sw = new StreamWriter(fs))
+                        {
+                            sw.WriteLine(siteSource);
+                            sw.Flush();
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+
+            /*
             long id = Convert.ToInt64(detailLink.Substring(detailLink.IndexOf('=') + 1));
             Therapist therapist = new Therapist { ID = id };
             Dispatch(() => webBrowser1.Navigate(detailLink));
@@ -138,6 +141,7 @@ namespace Grabber
                          ContactExtractor.ExtractContacts(therapist, bottom);
                      });
             return therapist;
+            */
         }
 
         private void ExtractAbilities(Therapist therapist, HtmlElement htmlElement)

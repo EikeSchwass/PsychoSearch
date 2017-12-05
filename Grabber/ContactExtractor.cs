@@ -224,7 +224,7 @@ namespace Grabber
                 number = s;
             }
             Debug.Assert(int.TryParse(number.Replace("-", ""), out var _));
-            return new TelefoneNumber { Number = number, Vorwahl = vorwahl };
+            return new TelefoneNumber { Number = number };
         }
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grabber", "Grabber\Grabber.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TherapistEditor", "TherapistEditor\TherapistEditor.csproj", "{6C8AE25F-18AC-430D-9A04-088C34A44F3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|x86.ActiveCfg = Release|x86
 		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|x86.Build.0 = Release|x86
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6C8AE25F-18AC-430D-9A04-088C34A44F3B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
