@@ -5,16 +5,32 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grabber", "Grabber\Grabber.csproj", "{69A1143D-F20A-48FC-8F7E-F4248D71C784}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Debug|x86.ActiveCfg = Debug|x86
+		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Debug|x86.Build.0 = Debug|x86
 		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Release|x86.ActiveCfg = Release|x86
+		{69A1143D-F20A-48FC-8F7E-F4248D71C784}.Release|x86.Build.0 = Release|x86
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Debug|x86.ActiveCfg = Debug|x86
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Debug|x86.Build.0 = Debug|x86
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|x86.ActiveCfg = Release|x86
+		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

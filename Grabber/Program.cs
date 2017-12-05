@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Grabber
@@ -14,9 +11,27 @@ namespace Grabber
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Form1());
+            }
+            catch (AggregateException e)
+            {
+                foreach (var innerException in e.InnerExceptions)
+                {
+                    MessageBox.Show(innerException.ToString());
+                    MessageBox.Show(innerException.InnerException?.Message ?? "Empty");
+                    MessageBox.Show(innerException.InnerException?.InnerException?.Message ?? "Empty");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString());
+                MessageBox.Show(e.InnerException?.Message ?? "Empty");
+                MessageBox.Show(e.InnerException?.InnerException?.Message ?? "Empty");
+            }
         }
     }
 }
