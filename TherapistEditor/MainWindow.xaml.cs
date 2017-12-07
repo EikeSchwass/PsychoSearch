@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Core;
 using HtmlAgilityPack;
+using System.Linq;
 using static System.Diagnostics.Debug;
 
 namespace TherapistEditor
@@ -51,6 +52,7 @@ namespace TherapistEditor
                 var therapist = TherapistLoader.LoadTherapists(htmlDocument);
                 var name = new FileInfo(files[i]).Name.Split('.')[0].Replace("x", "");
                 therapist.ID = Convert.ToInt64(name);
+                therapist.KVNWebsite = @"http://www.arztauskunft-niedersachsen.de/arztsuche/detailAction.action?arztId=" + therapist.ID;
                 therapists.Add(therapist);
             }
             return therapists.ToArray();

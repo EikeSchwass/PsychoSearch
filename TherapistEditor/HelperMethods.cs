@@ -26,5 +26,10 @@ namespace TherapistEditor
         {
             return !string.IsNullOrWhiteSpace(htmlNode.GetDecodedInnerText());
         }
+
+        public static bool StartsWithNumber(this string s)
+        {
+            return s.Any() && int.TryParse(s.First() + "", out var _);
+        }
     }
 }

@@ -21,6 +21,8 @@ namespace Core
         [XmlAttribute]
         public long ID { get; set; }
         public List<Office> Offices { get; set; } = new List<Office>();
+        [XmlAttribute]
+        public string KVNWebsite { get; set; } = "";
 
         public override string ToString()
         {
