@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
 
@@ -9,6 +10,11 @@ namespace TherapistEditor
         public static string[] SplitByNewLine(this string source)
         {
             return source.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+        }
+
+        public static IEnumerable<HtmlNode> GetNonEmptyChildren(this HtmlNode node)
+        {
+            return node.ChildNodes.Where(n => n.HasInnerText());
         }
 
         public static string GetDecodedInnerText(this HtmlNode htmlNode) => HtmlEntity.DeEntitize(htmlNode.InnerText);

@@ -62,9 +62,71 @@ namespace TherapistEditor
             ParseAddress(office, addressNode);
             ParseContact(office, officeContactNode);
             ParseOfficeHours(office, officeHoursNode);
+            ParseOfficeContactHours(office, officeContactHoursNode);
 
 
             return office;
+        }
+
+        private void ParseOfficeContactHours(Office office, HtmlNode officeContactHoursNode)
+        {
+            var htmlNodes = officeContactHoursNode.GetNonEmptyChildren().Where(n => n.Name == "table").ToArray();
+            if (!htmlNodes.Any())
+                return;
+            Assert(htmlNodes.Length == 1);
+            var children = htmlNodes.Single().GetNonEmptyChildren().ToArray();
+            var firstLine = "TelefonischeErreichbarkeit:".Simplify();
+            Assert(children.First().GetDecodedInnerText().Simplify() == firstLine);
+            Assert(children.All(c => c.Name != "tbody"));
+            Assert(children.All(c => c.Name == "tr"));
+            foreach (var telefoneNode in children.Skip(1))
+            {
+                var tds = telefoneNode.GetNonEmptyChildren().ToArray();
+                Assert(tds.Length == 2);
+                var telefoneNumber = tds.First().GetDecodedInnerText().Simplify();
+                var officeHours = new List<OfficeHour>();
+                office.ContactTimes.TelefoneOfficeHours.Add(new KeyValuePair<TelefoneNumber, List<OfficeHour>>(new TelefoneNumber { Number = telefoneNumber, Type = TelefoneNumber.TelefoneNumberType.Telefon }, officeHours));
+                var parsedTimes = ParseContactTimes(tds.Last());
+                officeHours.AddRange(parsedTimes);
+            }
+
+        }
+        private IEnumerable<OfficeHour> ParseContactTimes(HtmlNode td)
+        {
+            var tableRows = td.GetDecodedInnerText().SplitByNewLine().Select(s => s.Simplify()).ToArray();
+            if (!tableRows.Any())
+                yield break;
+
+            DayOfWeek? currentDayOfWeek = null;
+
+            foreach (var tableRow in tableRows)
+            {
+                var testDay = ParseDayOfWeek(tableRow);
+                if (testDay != null)
+                {
+                    currentDayOfWeek = testDay;
+                }
+                else if (tableRow.StartsWithNumber() && currentDayOfWeek != null)
+                {
+                    var fromTo = tableRow.Split('-').Select(s => s.Simplify()).ToArray();
+                    Assert(fromTo.Length == 2);
+                    var from = fromTo[0].Split(':').Select(s => s.Simplify()).ToArray();
+                    var to = fromTo[1].Split(':').Select(s => s.Simplify()).ToArray();
+                    var fromHours = from[0];
+                    var fromMinutes = from[1];
+                    var toHours = to[0];
+                    var toMinutes = to[1];
+                    var fromTime = new DateTime(1970, 1, 1, Convert.ToInt32(fromHours), Convert.ToInt32(fromMinutes), 0);
+                    var toTime = new DateTime(1970, 1, 1, Convert.ToInt32(toHours), Convert.ToInt32(toMinutes), 0);
+                    yield return new OfficeHour { DayOfWeek = currentDayOfWeek.Value, From = fromTime, To = toTime };
+                }
+                else
+                {
+                    WriteLine(tableRow);
+                    dummy.Add(tableRow);
+                }
+            }
+
         }
 
         private void ParseOfficeHours(Office office, HtmlNode officeHoursNode)
@@ -101,7 +163,6 @@ namespace TherapistEditor
                 else
                 {
                     WriteLine(tableRow);
-                    dummy.Add(tableRow);
                 }
             }
 
