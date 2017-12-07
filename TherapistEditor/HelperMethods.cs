@@ -21,5 +21,10 @@ namespace TherapistEditor
             s = s.Trim();
             return s;
         }
+
+        public static bool HasInnerText(this HtmlNode htmlNode)
+        {
+            return !string.IsNullOrWhiteSpace(htmlNode.GetDecodedInnerText());
+        }
     }
 }

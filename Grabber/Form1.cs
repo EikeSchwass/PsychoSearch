@@ -173,9 +173,9 @@ namespace Grabber
                 }
                 currentList.Add(line.Trim());
             }
-            therapist.BesondereKenntnisse.AddRange(besondereKenntnisse);
-            therapist.Fachgebiete.AddRange(fachgebiete);
-            therapist.Zusatzbezeichnung.AddRange(zusatzbezeihnungen);
+            //therapist.BesondereKenntnisse.AddRange(besondereKenntnisse);
+            //therapist.Fachgebiete.AddRange(fachgebiete);
+            //therapist.Zusatzbezeichnung.AddRange(zusatzbezeihnungen);
         }
         private void ExtractLanguages(Therapist therapist, HtmlElement htmlElement)
         {

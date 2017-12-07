@@ -16,9 +16,7 @@ namespace Core
         public string Title { get; set; } = "";
         public string FullName => Name + " " + FamilyName;
         public List<string> Languages { get; set; } = new List<string>();
-        public List<string> Fachgebiete { get; set; } = new List<string>();
-        public List<string> BesondereKenntnisse { get; set; } = new List<string>();
-        public List<string> Zusatzbezeichnung { get; set; } = new List<string>();
+        public List<KeyValuePair<string, List<string>>> Qualifications { get; set; } = new List<KeyValuePair<string, List<string>>>();
         public List<TelefoneNumber> TelefoneNumbers { get; set; } = new List<TelefoneNumber>();
         [XmlAttribute]
         public long ID { get; set; }

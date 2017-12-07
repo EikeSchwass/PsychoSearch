@@ -48,13 +48,13 @@ namespace Grabber
 
             var road = lines[1].Substring(0, lines[1].LastIndexOf(' '));
             var houseNumber = lines[1].Substring(lines[1].LastIndexOf(' ') + 1);
-            address.Road = road;
-            address.HouseNumber = houseNumber;
+            //address.Road = road;
+            //address.HouseNumber = houseNumber;
 
             var zipCode = lines[2].Split(' ')[0];
             var city = lines[2].Substring(lines[2].IndexOf(' ') + 1);
             address.City = city;
-            address.ZipCode = zipCode;
+            //address.ZipCode = zipCode;
 
             return address;
         }

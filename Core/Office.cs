@@ -9,6 +9,7 @@ namespace Core
         public List<TelefoneNumber> TelefoneNumbers { get; set; } = new List<TelefoneNumber>();
         public List<OfficeHour> OfficeHours { get; set; } = new List<OfficeHour>();
         public ContactTimes ContactTimes { get; set; } = new ContactTimes();
+        public string Name { get; set; } = "";
     }
 
     public class ContactTimes

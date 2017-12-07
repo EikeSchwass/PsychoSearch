@@ -26,7 +26,101 @@ namespace TherapistEditor
 
         private IEnumerable<Office> ParseOffices(HtmlNode[] officeNodes)
         {
-            yield break;
+            foreach (var node in officeNodes)
+            {
+                Office office = null;
+                try
+                {
+                    office = ParseOffice(node);
+                }
+                catch (FormatException e)
+                {
+                    WriteLine(e.Message);
+                }
+                if (office != null)
+                    yield return office;
+            }
+        }
+
+        private Office ParseOffice(HtmlNode officeNode)
+        {
+            Assert(officeNode.HasInnerText());
+            var children = officeNode.ChildNodes.Where(n => n.Attributes["class"]?.Value == "detailContainer").ToArray();
+            Assert(children.Length == 4);
+            if (children.Last().HasInnerText())
+            {
+
+            }
+            var addressNode = children[0];
+            var officeContactNode = children[1];
+            var officeHoursNode = children[2];
+            var officeContactHoursNode = children[3];
+
+            var office = new Office();
+
+            ParseAddress(office, addressNode);
+            ParseContact(office, officeContactNode);
+
+
+            return office;
+        }
+
+        private void ParseContact(Office office, HtmlNode officeContactNode)
+        {
+            var children = officeContactNode.ChildNodes.Where(n => n.HasInnerText()).ToArray();
+            foreach (var child in children)
+            {
+                var entry = child.Descendants("span").Select(n => n.GetDecodedInnerText().Simplify()).ToArray();
+                Assert(entry.Length >= 2);
+                TelefoneNumber.TelefoneNumberType type = GetContactType(entry[0]);
+                foreach (var contactRow in entry.Skip(1))
+                {
+                    var telefoneNumber = new TelefoneNumber
+                    {
+                        Number = contactRow,
+                        Type = type
+                    };
+                    office.TelefoneNumbers.Add(telefoneNumber);
+                }
+
+            }
+        }
+
+        private TelefoneNumber.TelefoneNumberType GetContactType(string s)
+        {
+            switch (s)
+            {
+                case "Telefon:":
+                    return TelefoneNumber.TelefoneNumberType.Telefon;
+                case "Mobil:":
+                    return TelefoneNumber.TelefoneNumberType.Mobil;
+                case "Fax:":
+                    return TelefoneNumber.TelefoneNumberType.Fax;
+                case "Webseite:":
+                    return TelefoneNumber.TelefoneNumberType.Webseite;
+            }
+            Fail("Invalid contact type: " + s);
+            return TelefoneNumber.TelefoneNumberType.Telefon;
+        }
+
+        private void ParseAddress(Office office, HtmlNode addressNode)
+        {
+            var children = addressNode.ChildNodes.Where(n => n.HasInnerText()).ToArray();
+
+            if (children.Count(n => n.HasInnerText()) < 2)
+                throw new FormatException($"Invalid office address format: {addressNode.GetDecodedInnerText()}");
+            var officeName = children[children.Length - 2].GetDecodedInnerText().Simplify();
+            office.Name = officeName;
+            addressNode = children.Skip(1).LastOrDefault(n => n.HasInnerText());
+
+            if (addressNode == null || !addressNode.HasInnerText())
+                throw new FormatException($"Invalid office address format: {addressNode.GetDecodedInnerText()}");
+
+            var addressLines = addressNode.Descendants("span").Select(n => n.GetDecodedInnerText().Simplify()).ToArray();
+            Assert(addressLines.Length == 2);
+
+            office.Address.Street = addressLines[0];
+            office.Address.City = addressLines[1];
         }
 
         private Therapist ParseTherapist(HtmlNode therapistOverviewNode)
@@ -37,16 +131,42 @@ namespace TherapistEditor
             Assert(infoNodes.Length == 3);
 
             ParseName(therapist, infoNodes[0]);
-            ParseContact(therapist, infoNodes[1]);
+            ParseContactAndLanguages(therapist, infoNodes[1]);
             ParseQualifications(therapist, infoNodes[2]);
 
             return therapist;
         }
         private void ParseQualifications(Therapist therapist, HtmlNode infoNode)
         {
+            Dictionary<string, List<string>> qualifications = new Dictionary<string, List<string>>();
 
+
+            var entries = infoNode.Descendants("p").Where(n => n.HasChildNodes && n.HasInnerText()).ToArray();
+            foreach (var htmlNode in entries)
+            {
+                var lineElements = htmlNode.Descendants("span").Where(n => n.HasInnerText()).ToArray();
+                string currentCategory = "";
+                foreach (var lineElement in lineElements)
+                {
+                    var style = lineElement.Attributes["style"]?.DeEntitizeValue;
+                    if (style?.ToLower().Contains("font-weight: bold") == true)
+                    {
+                        currentCategory = lineElement.GetDecodedInnerText().Simplify();
+                        Assert(!qualifications.ContainsKey(currentCategory));
+                        qualifications.Add(currentCategory, new List<string>());
+                    }
+                    else
+                    {
+                        string currentLine = lineElement.GetDecodedInnerText().Simplify();
+                        qualifications[currentCategory].Add(currentLine);
+                    }
+                }
+            }
+            var list = qualifications.ToList();
+            therapist.Qualifications = list;
         }
-        private void ParseContact(Therapist therapist, HtmlNode infoNode)
+
+        private void ParseContactAndLanguages(Therapist therapist, HtmlNode infoNode)
         {
             string text = "";
             {
