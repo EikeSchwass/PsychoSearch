@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <entry key="welcome">
+    <value locale="en-us">Welcome</value>
+    <value locale="de-de">Willkommen</value>
+  </entry>
+  <entry key="welcomeText">
+    <value locale="en-us">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at. Consequat id porta nibh venenatis cras sed felis eget velit. Id volutpat lacus laoreet non curabitur gravida arcu ac. In dictum non consectetur a erat. Sit amet venenatis urna cursus. Id porta nibh venenatis cras sed felis eget velit aliquet. Sit amet venenatis urna cursus eget nunc scelerisque. Tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. A lacus vestibulum sed arcu non odio. Est velit egestas dui id ornare. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Consequat id porta nibh venenatis cras sed felis eget velit. Lectus nulla at volutpat diam ut venenatis tellus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Enim tortor at auctor urna nunc. Pretium fusce id velit ut tortor pretium viverra. Elit sed vulputate mi sit amet mauris commodo quis. Malesuada fames ac turpis egestas maecenas pharetra convallis. In hendrerit gravida rutrum quisque non.</value>
+    <value locale="de-de">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at. Consequat id porta nibh venenatis cras sed felis eget velit. Id volutpat lacus laoreet non curabitur gravida arcu ac. In dictum non consectetur a erat. Sit amet venenatis urna cursus. Id porta nibh venenatis cras sed felis eget velit aliquet. Sit amet venenatis urna cursus eget nunc scelerisque. Tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. A lacus vestibulum sed arcu non odio. Est velit egestas dui id ornare. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Consequat id porta nibh venenatis cras sed felis eget velit. Lectus nulla at volutpat diam ut venenatis tellus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Enim tortor at auctor urna nunc. Pretium fusce id velit ut tortor pretium viverra. Elit sed vulputate mi sit amet mauris commodo quis. Malesuada fames ac turpis egestas maecenas pharetra convallis. In hendrerit gravida rutrum quisque non.</value>
+  </entry>
+  <entry key="welcomeButton">
+    <value locale="en-us">OK</value>
+    <value locale="de-de">OK</value>
+  </entry>
+  <entry key="english">
+    <value locale="en-us">English</value>
+    <value locale="de-de">Englisch</value>
+  </entry>
+  <entry key="spanish">
+    <value locale="en-us">Spanish</value>
+    <value locale="de-de">Spanisch</value>
+  </entry>
+  <entry key="russian">
+    <value locale="en-us">Russian</value>
+    <value locale="de-de">Russisch</value>
+  </entry>
+  <entry key="french">
+    <value locale="en-us">French</value>
+    <value locale="de-de">Französisch</value>
+  </entry>
+  <entry key="language">
+    <value locale="en-us">Language</value>
+    <value locale="de-de">Sprache</value>
+  </entry>
+  <entry key="distance">
+    <value locale="en-us">Distance</value>
+    <value locale="de-de">Entfernung</value>
+  </entry>
+</strings>

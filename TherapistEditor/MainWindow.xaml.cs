@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using Core;
 using HtmlAgilityPack;
-using System.Linq;
 using static System.Diagnostics.Debug;
 
 namespace TherapistEditor

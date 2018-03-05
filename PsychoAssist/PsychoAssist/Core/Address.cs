@@ -1,11 +1,13 @@
 ﻿using System;
 
-namespace Core
+namespace PsychoAssist.Core
 {
     public class Address
     {
         public string Street { get; set; } = "";
         public string City { get; set; } = "";
+
+        public string FullAddress => ToString();
 
         public override string ToString()
         {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{ECFBABF2-2427-4D24-95D4-7B0FBF524DD0}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>PsychoAssist</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Address.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ContactTimes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Gender.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\GPSLocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Office.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\OfficeHour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\TelefoneNumber.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Therapist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FilteredTherapistCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IApplicationDataStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\LanguageFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\Localize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\BrowseTherapistsPage.xaml.cs">
+      <DependentUpon>BrowseTherapistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\StartPage.xaml.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\PlatformCulture.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\LanguageResourceNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\TranslateExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\ILocalize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TherapistCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TherapistFilter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Localization\Strings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Localization\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\StartPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)therapists.psycho" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\BrowseTherapistsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

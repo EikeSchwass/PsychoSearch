@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Core;
 using HtmlAgilityPack;
-using static System.Diagnostics.Debug;
 
-namespace TherapistEditor
+namespace TherapistLocalizer
 {
     public class TherapistLoader
     {
@@ -13,7 +13,7 @@ namespace TherapistEditor
         {
             var contentNode = htmlDocument.GetElementbyId("Content");
             var detailNodes = contentNode.ChildNodes.Where(n => n.Attributes["class"]?.Value == "detailContainer" && !string.IsNullOrWhiteSpace(n.InnerText)).ToArray();
-            Assert(detailNodes.Length >= 1);
+            Debug.Assert(detailNodes.Length >= 1);
             var therapistOverviewNode = detailNodes[0];
             var officeNodes = detailNodes.Skip(1).ToArray();
 
@@ -35,7 +35,7 @@ namespace TherapistEditor
                 }
                 catch (FormatException e)
                 {
-                    WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                 }
                 if (office != null)
                     yield return office;
@@ -44,9 +44,9 @@ namespace TherapistEditor
 
         private Office ParseOffice(HtmlNode officeNode)
         {
-            Assert(officeNode.HasInnerText());
+            Debug.Assert(officeNode.HasInnerText());
             var children = officeNode.ChildNodes.Where(n => n.Attributes["class"]?.Value == "detailContainer").ToArray();
-            Assert(children.Length == 4);
+            Debug.Assert(children.Length == 4);
             if (children.Last().HasInnerText())
             {
 
@@ -72,16 +72,16 @@ namespace TherapistEditor
             var htmlNodes = officeContactHoursNode.GetNonEmptyChildren().Where(n => n.Name == "table").ToArray();
             if (!htmlNodes.Any())
                 return;
-            Assert(htmlNodes.Length == 1);
+            Debug.Assert(htmlNodes.Length == 1);
             var children = htmlNodes.Single().GetNonEmptyChildren().ToArray();
             var firstLine = "TelefonischeErreichbarkeit:".Simplify();
-            Assert(children.First().GetDecodedInnerText().Simplify() == firstLine);
-            Assert(children.All(c => c.Name != "tbody"));
-            Assert(children.All(c => c.Name == "tr"));
+            Debug.Assert(children.First().GetDecodedInnerText().Simplify() == firstLine);
+            Debug.Assert(children.All(c => c.Name != "tbody"));
+            Debug.Assert(children.All(c => c.Name == "tr"));
             foreach (var telefoneNode in children.Skip(1))
             {
                 var tds = telefoneNode.GetNonEmptyChildren().ToArray();
-                Assert(tds.Length == 2);
+                Debug.Assert(tds.Length == 2);
                 var telefoneNumber = tds.First().GetDecodedInnerText().Simplify();
                 var officeHours = new List<OfficeHour>();
                 office.ContactTimes.TelefoneOfficeHours.Add(new KeyValuePair<TelefoneNumber, List<OfficeHour>>(new TelefoneNumber { Number = telefoneNumber, Type = TelefoneNumber.TelefoneNumberType.Telefon }, officeHours));
@@ -108,7 +108,7 @@ namespace TherapistEditor
                 else if (tableRow.StartsWithNumber() && currentDayOfWeek != null)
                 {
                     var fromTo = tableRow.Split('-').Select(s => s.Simplify()).ToArray();
-                    Assert(fromTo.Length == 2);
+                    Debug.Assert(fromTo.Length == 2);
                     var from = fromTo[0].Split(':').Select(s => s.Simplify()).ToArray();
                     var to = fromTo[1].Split(':').Select(s => s.Simplify()).ToArray();
                     var fromHours = from[0];
@@ -118,11 +118,6 @@ namespace TherapistEditor
                     var fromTime = new DateTime(1970, 1, 1, Convert.ToInt32(fromHours), Convert.ToInt32(fromMinutes), 0);
                     var toTime = new DateTime(1970, 1, 1, Convert.ToInt32(toHours), Convert.ToInt32(toMinutes), 0);
                     yield return new OfficeHour { DayOfWeek = currentDayOfWeek.Value, From = fromTime, To = toTime };
-                }
-                else
-                {
-                    WriteLine(tableRow);
-                    dummy.Add(tableRow);
                 }
             }
 
@@ -134,7 +129,7 @@ namespace TherapistEditor
             if (!tableRows.Any())
                 return;
 
-            Assert(tableRows.First() == "Sprechzeiten:");
+            Debug.Assert(tableRows.First() == "Sprechzeiten:");
 
             DayOfWeek? currentDayOfWeek = null;
 
@@ -148,7 +143,7 @@ namespace TherapistEditor
                 else if (tableRow.StartsWithNumber() && currentDayOfWeek != null)
                 {
                     var fromTo = tableRow.Split('-').Select(s => s.Simplify()).ToArray();
-                    Assert(fromTo.Length == 2);
+                    Debug.Assert(fromTo.Length == 2);
                     var from = fromTo[0].Split(':').Select(s => s.Simplify()).ToArray();
                     var to = fromTo[1].Split(':').Select(s => s.Simplify()).ToArray();
                     var fromHours = from[0];
@@ -161,13 +156,10 @@ namespace TherapistEditor
                 }
                 else
                 {
-                    WriteLine(tableRow);
                 }
             }
 
         }
-
-        public static List<string> dummy = new List<string>();
 
         private void ParseContact(Office office, HtmlNode officeContactNode)
         {
@@ -175,7 +167,7 @@ namespace TherapistEditor
             foreach (var child in children)
             {
                 var entry = child.Descendants("span").Select(n => n.GetDecodedInnerText().Simplify()).ToArray();
-                Assert(entry.Length >= 2);
+                Debug.Assert(entry.Length >= 2);
                 TelefoneNumber.TelefoneNumberType type = GetContactType(entry[0]);
                 foreach (var contactRow in entry.Skip(1))
                 {
@@ -217,7 +209,7 @@ namespace TherapistEditor
                 case "Webseite:":
                     return TelefoneNumber.TelefoneNumberType.Webseite;
             }
-            Fail("Invalid contact type: " + s);
+            Debug.Fail("Invalid contact type: " + s);
             return TelefoneNumber.TelefoneNumberType.Telefon;
         }
 
@@ -235,7 +227,7 @@ namespace TherapistEditor
                 throw new FormatException($"Invalid office address format: {addressNode.GetDecodedInnerText()}");
 
             var addressLines = addressNode.Descendants("span").Select(n => n.GetDecodedInnerText().Simplify()).ToArray();
-            Assert(addressLines.Length == 2);
+            Debug.Assert(addressLines.Length == 2);
 
             office.Address.Street = addressLines[0];
             office.Address.City = addressLines[1];
@@ -246,7 +238,7 @@ namespace TherapistEditor
             var therapist = new Therapist();
 
             var infoNodes = therapistOverviewNode.ChildNodes.Where(n => n.Attributes["class"]?.Value == "detailContainer" && !string.IsNullOrWhiteSpace(n.InnerText)).ToArray();
-            Assert(infoNodes.Length == 3);
+            Debug.Assert(infoNodes.Length == 3);
 
             ParseName(therapist, infoNodes[0]);
             ParseContactAndLanguages(therapist, infoNodes[1]);
@@ -270,7 +262,7 @@ namespace TherapistEditor
                     if (style?.ToLower().Contains("font-weight: bold") == true)
                     {
                         currentCategory = lineElement.GetDecodedInnerText().Simplify();
-                        Assert(!qualifications.ContainsKey(currentCategory));
+                        Debug.Assert(!qualifications.ContainsKey(currentCategory));
                         qualifications.Add(currentCategory, new List<string>());
                     }
                     else
@@ -301,7 +293,7 @@ namespace TherapistEditor
             var rows = text.Split('\t').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
             if (rows.Any())
             {
-                Assert(rows.Length > 1);
+                Debug.Assert(rows.Length > 1);
 
                 TelefoneNumber.TelefoneNumberType? currentType = null;
                 foreach (var row in rows)
@@ -356,7 +348,7 @@ namespace TherapistEditor
                     break;
                 default:
                     therapist.Gender = Gender.Unknown;
-                    Fail("Unknown Gender");
+                    Debug.Fail("Unknown Gender");
                     break;
             }
             if (nameSpans.Length == 3)
@@ -370,8 +362,8 @@ namespace TherapistEditor
             string name = fullName.Substring(0, fullName.Length - familyName.Length).Simplify();
             therapist.FamilyName = familyName;
             therapist.Name = name;
-            Assert(!string.IsNullOrWhiteSpace(name));
-            Assert(!string.IsNullOrWhiteSpace(familyName));
+            Debug.Assert(!string.IsNullOrWhiteSpace(name));
+            Debug.Assert(!string.IsNullOrWhiteSpace(familyName));
         }
     }
 }
