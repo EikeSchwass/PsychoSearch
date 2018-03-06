@@ -10,11 +10,12 @@ namespace PsychoAssist
     {
         private bool english;
         private bool french;
-        private double maxDistanceInMeter=5;
+        private Gender gender = Gender.Unknown;
+        private double maxDistanceInMeter = 2500;
         private bool russian;
         private bool spanish;
-        private GPSLocation userLocation=new GPSLocation(8.054,15.818);
-        private Gender gender=Gender.Unknown;
+        private Plugin.Geolocator.Abstractions.Address userAddress;
+        private GPSLocation userLocation;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public bool English
@@ -82,6 +83,17 @@ namespace PsychoAssist
                 if (Equals(value, userLocation))
                     return;
                 userLocation = value;
+                OnPropertyChanged();
+            }
+        }
+        public Plugin.Geolocator.Abstractions.Address UserAddress
+        {
+            get => userAddress;
+            set
+            {
+                if (value == userAddress)
+                    return;
+                userAddress = value;
                 OnPropertyChanged();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Xml.Serialization;
 using PsychoAssist.Core;
@@ -10,7 +11,7 @@ namespace PsychoAssist
     {
         public ObservableCollection<Therapist> StarredTherapists { get; } = new ObservableCollection<Therapist>();
         public ReadOnlyCollection<Therapist> AllTherapists { get; }
-        public FilteredTherapistCollection FilteredTherapistCollection { get; }
+        public TherapistFilter Filter { get; }
 
         public TherapistCollection()
         {
@@ -22,11 +23,11 @@ namespace PsychoAssist
                 var therapists = (Therapist[])serializer.Deserialize(psychoStream ?? throw new InvalidOperationException());
                 therapists = therapists.OrderBy(t => t.FamilyName).ThenBy(t => t.Name).ToArray();
                 AllTherapists = new ReadOnlyCollection<Therapist>(therapists);
-                FilteredTherapistCollection = new FilteredTherapistCollection(therapists);
+                Filter = new TherapistFilter();
             }
         }
 
-        private void StarredTherapists_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void StarredTherapists_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             var starredString = string.Join("|", StarredTherapists.Select(t => t.ID));
             App.Instance.DataStorage.SaveValue("starredtherapists", starredString);

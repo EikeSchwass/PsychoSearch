@@ -24,11 +24,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)Core\TelefoneNumber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Therapist.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilteredTherapistCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GenderImageConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GenderLanguageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IApplicationDataStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\LanguageFile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\Localize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LocationIsNullConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MeterConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\BrowseTherapistsPage.xaml.cs">
       <DependentUpon>BrowseTherapistsPage.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\FilteredTherapistPage.xaml.cs">
+      <DependentUpon>FilteredTherapistPage.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Pages\StartPage.xaml.cs">
@@ -43,6 +51,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Localization\LanguageResourceNotFoundException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\TranslateExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\ILocalize.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StretchConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TherapistCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TherapistFilter.cs" />
   </ItemGroup>
@@ -69,6 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\BrowseTherapistsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Pages\FilteredTherapistPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

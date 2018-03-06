@@ -3,19 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:localization="clr-namespace:PsychoAssist.Localization;assembly=PsychoAssist.Android"
              xmlns:psychoAssist="clr-namespace:PsychoAssist;assembly=PsychoAssist.Android"
+             xmlns:core="clr-namespace:PsychoAssist.Core;assembly=PsychoAssist.Android"
              x:Class="PsychoAssist.Pages.BrowseTherapistsPage"
-             BindingContext="{x:Static psychoAssist:App.Instance}">
+             BindingContext="{x:Static psychoAssist:App.Instance}"
+             NavigationPage.BackButtonTitle="Your Title">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <psychoAssist:MeterConverter x:Key="MeterConverter" />
+            <psychoAssist:StretchConverter x:Key="StretchConverter" />
+            <psychoAssist:GenderLanguageConverter x:Key="GenderLanguageConverter" />
+            <psychoAssist:LocationIsNullConverter x:Key="LocationIsNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ScrollView Grid.Row="0" BindingContext="{Binding Path=TherapistCollection.FilteredTherapistCollection.Filter}">
+            <ScrollView Grid.Row="0" BindingContext="{Binding Path=TherapistCollection.Filter}">
                 <TableView Intent="Settings">
                     <TableRoot>
                         <TableSection Title="{localization:Translate distance}">
-                            <ImageCell ImageSource="gps.png" Detail="{Binding UserLocation, StringFormat='{0}'}" Text="Eichweg 18, 37077 Göttingen" DetailColor="#6f6f9f" TextColor="CornflowerBlue" />
+                            <ImageCell Tapped="GpsLocationUpdateRequested" ImageSource="gps.png" Text="{Binding UserLocation, StringFormat='{0}',Mode=OneWay, Converter={StaticResource LocationIsNullConverter}}" DetailColor="#6f6f9f" TextColor="CornflowerBlue" />
                             <ViewCell>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -23,10 +33,30 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="Max Distance:" VerticalOptions="CenterAndExpand" />
-                                        <Label Text="{Binding MaxDistanceInMeter, StringFormat='{0} m'}" VerticalOptions="CenterAndExpand" />
+                                        <Label Text="Max Distance:" VerticalOptions="CenterAndExpand" Margin="10,0,0,0" />
+                                        <Label Text="{Binding MaxDistanceInMeter, StringFormat='{0:##0.0} km', Converter={StaticResource MeterConverter}}" VerticalOptions="CenterAndExpand" />
                                     </StackLayout>
-                                    <Slider Grid.Column="1" Minimum="0" Maximum="11" Value="{Binding MaxDistanceInMeter, Mode=TwoWay}" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="2" />
+                                    <Slider Grid.Column="1" Maximum="8891.39705" Minimum="1581.1388300" Margin="2,2,10,2" Value="{Binding MaxDistanceInMeter, Mode=TwoWay,Converter={StaticResource StretchConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" />
+                                </Grid>
+                            </ViewCell>
+                        </TableSection>
+                        <TableSection Title="{localization:Translate gender}">
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{localization:Translate genderprompt}" VerticalOptions="CenterAndExpand" HorizontalOptions="StartAndExpand" />
+                                    <Picker Grid.Column="1" Title="{localization:Translate genderprompt}" SelectedItem="{Binding Gender, Mode=TwoWay}" ItemDisplayBinding="{Binding Converter={StaticResource GenderLanguageConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="2">
+                                        <Picker.ItemsSource>
+                                            <x:Array Type="{x:Type core:Gender}">
+                                                <core:Gender>Male</core:Gender>
+                                                <core:Gender>Female</core:Gender>
+                                                <core:Gender>Unknown</core:Gender>
+                                            </x:Array>
+                                        </Picker.ItemsSource>
+                                    </Picker>
                                 </Grid>
                             </ViewCell>
                         </TableSection>
@@ -39,7 +69,7 @@
                     </TableRoot>
                 </TableView>
             </ScrollView>
-            <Button Grid.Row="1" Text="Search" />
+            <Button Grid.Row="1" Text="{localization:Translate search}" Clicked="SearchButtonClicked" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

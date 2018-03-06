@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:psychoAssist="clr-namespace:PsychoAssist;assembly=PsychoAssist.Android"
+             xmlns:core="clr-namespace:PsychoAssist.Core;assembly=PsychoAssist.Android"
+             d:DataContext="{d:DesignInstance core:Therapist}"
+             x:Class="PsychoAssist.Pages.FilteredTherapistPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <psychoAssist:GenderImageConverter x:Key="GenderImageConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding}">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <ImageCell Text="{Binding Path=FullName}" Detail="{Binding Path=Addresses[0].FullAddress}" ImageSource="{Binding Path=Gender, Converter={StaticResource GenderImageConverter}}" TextColor="CornflowerBlue" DetailColor="#6f6f9f" />
+                    </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

@@ -10,6 +10,7 @@ namespace PsychoAssist
 {
     public partial class App
     {
+        private double GPSAccuracy { get; set; } = double.MinValue;
         public static App Instance { get; private set; }
         public IApplicationDataStorage DataStorage { get; }
         public LanguageFile LanguageFile { get; }
@@ -32,19 +33,20 @@ namespace PsychoAssist
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
         }
 
         protected override void OnStart()
         {
+
             var navigationPage = new NavigationPage(new StartPage());
             MainPage = navigationPage;
         }
+        
+
         private string LoadLanguages()
         {
             var assembly = Assembly.GetAssembly(typeof(App));

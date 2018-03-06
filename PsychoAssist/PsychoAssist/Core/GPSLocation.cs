@@ -5,9 +5,10 @@ namespace PsychoAssist.Core
 {
     public class GPSLocation
     {
-        [XmlAttribute]
+        public static GPSLocation Zero { get; } = new GPSLocation(0, 0);
+        [XmlAttribute("Latitude")]
         public double Longitude { get; set; }
-        [XmlAttribute]
+        [XmlAttribute("Longitude")]
         public double Latitude { get; set; }
 
         public GPSLocation(double latitude, double longitude)
@@ -20,43 +21,6 @@ namespace PsychoAssist.Core
         {
             Longitude = 0;
             Latitude = 0;
-        }
-
-        public bool Equals(GPSLocation other)
-        {
-            return Longitude.Equals(other.Longitude) && Latitude.Equals(other.Latitude);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return false;
-            return obj is GPSLocation && Equals((GPSLocation)obj);
-        }
-        // ReSharper disable once NonReadonlyMemberInGetHashCode
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                // ReSharper disable once NonReadonlyMemberInGetHashCode
-                var i = Longitude.GetHashCode() * 397;
-                return i ^ Latitude.GetHashCode();
-            }
-        }
-
-        public static bool operator ==(GPSLocation left, GPSLocation right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(GPSLocation left, GPSLocation right)
-        {
-            return !Equals(left, right);
-        }
-
-        public static double operator -(GPSLocation location1, GPSLocation location2)
-        {
-            return GetDistanceInMeter(location1, location2);
         }
 
         //From https://www.movable-type.co.uk/scripts/latlong.html
@@ -75,14 +39,51 @@ namespace PsychoAssist.Core
             return d;
         }
 
-        private static double ToRadians(double x)
+        public static bool operator ==(GPSLocation left, GPSLocation right)
         {
-            return x / 180 * Math.PI;
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(GPSLocation left, GPSLocation right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static double operator -(GPSLocation location1, GPSLocation location2)
+        {
+            return GetDistanceInMeter(location1, location2);
+        }
+
+        public bool Equals(GPSLocation other)
+        {
+            return Longitude.Equals(other.Longitude) && Latitude.Equals(other.Latitude);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            return obj is GPSLocation location && Equals(location);
+        }
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                var i = Longitude.GetHashCode() * 397;
+                return i ^ Latitude.GetHashCode();
+            }
         }
 
         public override string ToString()
         {
             return $"{Latitude:#0.00000}|{Longitude:#0.00000}";
+        }
+
+        private static double ToRadians(double x)
+        {
+            return x / 180 * Math.PI;
         }
     }
 }

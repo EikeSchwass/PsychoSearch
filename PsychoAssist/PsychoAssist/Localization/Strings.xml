@@ -8,6 +8,18 @@
     <value locale="en-us">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at. Consequat id porta nibh venenatis cras sed felis eget velit. Id volutpat lacus laoreet non curabitur gravida arcu ac. In dictum non consectetur a erat. Sit amet venenatis urna cursus. Id porta nibh venenatis cras sed felis eget velit aliquet. Sit amet venenatis urna cursus eget nunc scelerisque. Tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. A lacus vestibulum sed arcu non odio. Est velit egestas dui id ornare. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Consequat id porta nibh venenatis cras sed felis eget velit. Lectus nulla at volutpat diam ut venenatis tellus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Enim tortor at auctor urna nunc. Pretium fusce id velit ut tortor pretium viverra. Elit sed vulputate mi sit amet mauris commodo quis. Malesuada fames ac turpis egestas maecenas pharetra convallis. In hendrerit gravida rutrum quisque non.</value>
     <value locale="de-de">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at. Consequat id porta nibh venenatis cras sed felis eget velit. Id volutpat lacus laoreet non curabitur gravida arcu ac. In dictum non consectetur a erat. Sit amet venenatis urna cursus. Id porta nibh venenatis cras sed felis eget velit aliquet. Sit amet venenatis urna cursus eget nunc scelerisque. Tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. A lacus vestibulum sed arcu non odio. Est velit egestas dui id ornare. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Consequat id porta nibh venenatis cras sed felis eget velit. Lectus nulla at volutpat diam ut venenatis tellus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Enim tortor at auctor urna nunc. Pretium fusce id velit ut tortor pretium viverra. Elit sed vulputate mi sit amet mauris commodo quis. Malesuada fames ac turpis egestas maecenas pharetra convallis. In hendrerit gravida rutrum quisque non.</value>
   </entry>
+  <entry key="startPageHeader">
+    <value locale="en-us">Therapy Finder</value>
+    <value locale="de-de">Therapieplatz Assistent</value>
+  </entry>
+  <entry key="browseTherapistsButton">
+    <value locale="en-us">Browse Therapists</value>
+    <value locale="de-de">Therapeuten Finden</value>
+  </entry>
+  <entry key="starredTherapistsHeader">
+    <value locale="en-us">Starred Therapists</value>
+    <value locale="de-de">Favorisierte Therapeuten</value>
+  </entry>
   <entry key="welcomeButton">
     <value locale="en-us">OK</value>
     <value locale="de-de">OK</value>
@@ -32,8 +44,60 @@
     <value locale="en-us">Language</value>
     <value locale="de-de">Sprache</value>
   </entry>
+  <entry key="locationloading">
+    <value locale="en-us">Searching...</value>
+    <value locale="de-de">Suche Position...</value>
+  </entry>
+  <entry key="locationnotfound">
+    <value locale="en-us">Location not Found. Tap to refresh.</value>
+    <value locale="de-de">Position nicht gefunden. Tippen für aktulisieren.</value>
+  </entry>
+  <entry key="genderprompt">
+    <value locale="en-us">Preferred Gender</value>
+    <value locale="de-de">Bevorzugtes Geschlecht</value>
+  </entry>
+  <entry key="gender">
+    <value locale="en-us">Gender</value>
+    <value locale="de-de">Geschlecht</value>
+  </entry>
+  <entry key="male">
+    <value locale="en-us">Male</value>
+    <value locale="de-de">Männlich</value>
+  </entry>
+  <entry key="female">
+    <value locale="en-us">Female</value>
+    <value locale="de-de">Weichblich</value>
+  </entry>
+  <entry key="dontcare">
+    <value locale="en-us">Don't Care</value>
+    <value locale="de-de">Egal</value>
+  </entry>
+  <entry key="unknown">
+    <value locale="en-us">Unknown</value>
+    <value locale="de-de">Unbekannt</value>
+  </entry>
   <entry key="distance">
     <value locale="en-us">Distance</value>
     <value locale="de-de">Entfernung</value>
+  </entry>
+  <entry key="search">
+    <value locale="en-us">Search...</value>
+    <value locale="de-de">Suche...</value>
+  </entry>
+  <entry key="nolocationtitle">
+    <value locale="en-us">Location</value>
+    <value locale="de-de">Position</value>
+  </entry>
+  <entry key="nolocationmessage">
+    <value locale="en-us">No GPS location found. Distance will be ignored. Continue Anyway?</value>
+    <value locale="de-de">Keine GPS-Position gefunden. Die Entfernung wird ignoriert. Trotzdem Fortfahren?</value>
+  </entry>
+  <entry key="nolocationaccept">
+    <value locale="en-us">Yes</value>
+    <value locale="de-de">Ja</value>
+  </entry>
+  <entry key="nolocationcancel">
+    <value locale="en-us">No</value>
+    <value locale="de-de">Nein</value>
   </entry>
 </strings>
