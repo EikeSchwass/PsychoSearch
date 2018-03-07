@@ -6,15 +6,15 @@ namespace PsychoAssist.Core
     public class GPSLocation
     {
         public static GPSLocation Zero { get; } = new GPSLocation(0, 0);
-        [XmlAttribute("Latitude")]
+        [XmlAttribute]
         public double Longitude { get; set; }
-        [XmlAttribute("Longitude")]
+        [XmlAttribute]
         public double Latitude { get; set; }
 
         public GPSLocation(double latitude, double longitude)
         {
-            Longitude = longitude;
-            Latitude = latitude;
+            Longitude = latitude;
+            Latitude = longitude;
         }
 
         public GPSLocation()

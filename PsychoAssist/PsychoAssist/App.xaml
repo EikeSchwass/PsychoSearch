@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:psychoAssist="clr-namespace:PsychoAssist;assembly=PsychoAssist.Android"
              x:Class="PsychoAssist.App">
 	<Application.Resources>
-        
-	</Application.Resources>
+	    <ResourceDictionary>
+	        <psychoAssist:MeterConverter x:Key="MeterConverter" />
+	        <psychoAssist:StretchConverter x:Key="StretchConverter" />
+	        <psychoAssist:GenderLanguageConverter x:Key="GenderLanguageConverter" />
+	        <psychoAssist:LocationIsNullConverter x:Key="LocationIsNullConverter" />
+	    </ResourceDictionary>
+    </Application.Resources>
 </Application>

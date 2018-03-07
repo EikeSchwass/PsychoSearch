@@ -15,9 +15,9 @@ namespace PsychoAssist.Pages
                 Navigation.PushAsync(new WelcomePage());
         }
 
-        private async void BrowseTherapistsButtonClicked(object sender, EventArgs e)
+        private void BrowseTherapistsButtonClicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new BrowseTherapistsPage());
+            App.Instance.PushPage(new BrowseTherapistsPage());
         }
     }
 }

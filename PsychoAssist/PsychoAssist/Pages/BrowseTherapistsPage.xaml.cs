@@ -18,14 +18,7 @@ namespace PsychoAssist.Pages
         {
             InitializeComponent();
         }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-
-            await UpdateLocation();
-        }
-
+        
         private async Task UpdateLocation()
         {
             var filter = App.Instance.TherapistCollection.Filter;
@@ -43,8 +36,16 @@ namespace PsychoAssist.Pages
                     if (geolocator.IsGeolocationAvailable && geolocator.IsGeolocationEnabled)
                         do
                         {
-                            position = await geolocator.GetPositionAsync(TimeSpan.FromSeconds(3));
-                            tries++;
+                            try
+                            {
+                                position = await geolocator.GetPositionAsync(TimeSpan.FromSeconds(3));
+                                tries++;
+                            }
+                            catch (AggregateException ex)
+                            {
+                                Debug.WriteLine(ex);
+
+                            }
                         }
                         while (position == null && tries < 10);
                 }
@@ -54,7 +55,7 @@ namespace PsychoAssist.Pages
                 }
 
                 if (position == null)
-                    position = await geolocator.GetLastKnownLocationAsync();
+                    position = geolocator.GetLastKnownLocationAsync().Result;
                 if (position == null)
                     throw new NotSupportedException("Device doesn't support GPS");
                 filter.UserLocation = new GPSLocation(position.Latitude, position.Longitude);
@@ -83,14 +84,21 @@ namespace PsychoAssist.Pages
             var languageFile = App.Instance.LanguageFile;
             if (filter.UserLocation == null || filter.UserLocation == GPSLocation.Zero)
             {
-                var accepted = await DisplayAlert(languageFile.GetString("nolocationtitle", ci),languageFile.GetString("nolocationmessage",ci),languageFile.GetString("nolocationaccept",ci),languageFile.GetString("nolocationcancel",ci));
+                var accepted = await DisplayAlert(languageFile.GetString("nolocationtitle", ci), languageFile.GetString("nolocationmessage", ci), languageFile.GetString("nolocationaccept", ci), languageFile.GetString("nolocationcancel", ci));
                 if (!accepted)
                     return;
             }
 
             var filteredTherapists = therapistCollection.AllTherapists.Where(t => therapistCollection.Filter.Allows(t));
 
-            await Navigation.PushAsync(new FilteredTherapistPage(filteredTherapists));
+            var filteredTherapistPage = new FilteredTherapistPage();
+            App.Instance.PushPage(filteredTherapistPage);
+            filteredTherapistPage.SetTherapists(filteredTherapists);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            return App.Instance.PopPage();
         }
     }
 }

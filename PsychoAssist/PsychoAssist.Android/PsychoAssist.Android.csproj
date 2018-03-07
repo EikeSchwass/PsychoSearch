@@ -88,16 +88,16 @@
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\femalehead.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\malehead.png" />
+    <AndroidResource Include="Resources\drawable\gps.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\unknownhead.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\gps.png" />
+    <AndroidResource Include="Resources\drawable\femalehead.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\malehead.png" />
   </ItemGroup>
   <Import Project="..\PsychoAssist\PsychoAssist.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

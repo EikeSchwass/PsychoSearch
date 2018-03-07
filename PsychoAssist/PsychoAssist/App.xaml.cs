@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -16,6 +17,8 @@ namespace PsychoAssist
         public LanguageFile LanguageFile { get; }
         public TherapistCollection TherapistCollection { get; } = new TherapistCollection();
 
+        private Stack<Page> Pages { get; } = new Stack<Page>();
+
         public App(IApplicationDataStorage dataStorage)
         {
             if (Instance != null)
@@ -28,7 +31,29 @@ namespace PsychoAssist
             var languages = LoadLanguages();
 
             LanguageFile = new LanguageFile(languages);
+            MainPage = new StartPage();
+            Pages.Push(MainPage);
+        }
 
+        public void PushPage(Page page)
+        {
+            Pages.Push(page);
+            MainPage = page;
+        }
+
+        public bool PopPage()
+        {
+            if (Pages.Count > 1)
+            {
+                var page = Pages.Pop();
+                MainPage = Pages.Peek();
+                return true;
+            }
+            else
+            {
+                MainPage = Pages.Peek();
+                return false;
+            }
         }
 
         protected override void OnResume()
@@ -42,10 +67,8 @@ namespace PsychoAssist
         protected override void OnStart()
         {
 
-            var navigationPage = new NavigationPage(new StartPage());
-            MainPage = navigationPage;
         }
-        
+
 
         private string LoadLanguages()
         {

@@ -7,17 +7,21 @@ namespace PsychoAssist
 {
     public class GenderImageConverter : IValueConverter
     {
+        private static Lazy<ImageSource> MaleHead { get; } = new Lazy<ImageSource>(() => ImageSource.FromFile("malehead.png"));
+        private static Lazy<ImageSource> FemaleHead { get; } = new Lazy<ImageSource>(() => ImageSource.FromFile("femalehead.png"));
+        private static Lazy<ImageSource> UnknownHead { get; } = new Lazy<ImageSource>(() => ImageSource.FromFile("unknownhead.png"));
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var gender = (Gender)value;
             switch (gender)
             {
                 case Gender.Male:
-                    return ImageSource.FromFile("malehead.png");
+                    return MaleHead.Value;
                 case Gender.Female:
-                    return ImageSource.FromFile("femalehead.png");
+                    return FemaleHead.Value;
                 case Gender.Unknown:
-                    return ImageSource.FromFile("unknownhead.png");
+                    return UnknownHead;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

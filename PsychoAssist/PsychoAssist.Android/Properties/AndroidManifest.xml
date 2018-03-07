@@ -4,5 +4,5 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
-	<application android:label="PsychoAssist.Android"></application>
+	<application android:label="PsychoAssist.Android" android:hardwareAccelerated="false" android:largeHeap="true"></application>
 </manifest>

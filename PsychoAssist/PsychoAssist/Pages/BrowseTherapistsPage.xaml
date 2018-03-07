@@ -4,16 +4,8 @@
              xmlns:localization="clr-namespace:PsychoAssist.Localization;assembly=PsychoAssist.Android"
              xmlns:psychoAssist="clr-namespace:PsychoAssist;assembly=PsychoAssist.Android"
              xmlns:core="clr-namespace:PsychoAssist.Core;assembly=PsychoAssist.Android"
-             x:Class="PsychoAssist.Pages.BrowseTherapistsPage"
-             BindingContext="{x:Static psychoAssist:App.Instance}"
-             NavigationPage.BackButtonTitle="Your Title">
+             x:Class="PsychoAssist.Pages.BrowseTherapistsPage" BindingContext="{x:Static psychoAssist:App.Instance}">
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <psychoAssist:MeterConverter x:Key="MeterConverter" />
-            <psychoAssist:StretchConverter x:Key="StretchConverter" />
-            <psychoAssist:GenderLanguageConverter x:Key="GenderLanguageConverter" />
-            <psychoAssist:LocationIsNullConverter x:Key="LocationIsNullConverter" />
-        </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
