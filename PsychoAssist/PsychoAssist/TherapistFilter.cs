@@ -125,7 +125,7 @@ namespace PsychoAssist
             if (Gender == Gender.Female && therapist.Gender == Gender.Male)
                 return false;
 
-            if (UserLocation != null && MaxDistanceInMeter > 0)
+            if (UserLocation != null && MaxDistanceInMeter > 0 && UserLocation != GPSLocation.Zero)
             {
                 var distance = therapist.Offices.Min(o => o.Location - UserLocation);
                 if (distance > MaxDistanceInMeter)

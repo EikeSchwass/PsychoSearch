@@ -45,7 +45,7 @@ namespace PsychoAssist
         {
             if (Pages.Count > 1)
             {
-                var page = Pages.Pop();
+                Pages.Pop();
                 MainPage = Pages.Peek();
                 return true;
             }

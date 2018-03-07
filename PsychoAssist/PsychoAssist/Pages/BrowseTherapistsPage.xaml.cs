@@ -91,9 +91,8 @@ namespace PsychoAssist.Pages
 
             var filteredTherapists = therapistCollection.AllTherapists.Where(t => therapistCollection.Filter.Allows(t));
 
-            var filteredTherapistPage = new FilteredTherapistPage();
+            var filteredTherapistPage = new FilteredTherapistPage(filteredTherapists);
             App.Instance.PushPage(filteredTherapistPage);
-            filteredTherapistPage.SetTherapists(filteredTherapists);
         }
 
         protected override bool OnBackButtonPressed()

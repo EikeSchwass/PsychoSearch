@@ -25,7 +25,7 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="Max Distance:" VerticalOptions="CenterAndExpand" Margin="10,0,0,0" />
+                                        <Label Text="{localization:Translate maxdistance}" VerticalOptions="CenterAndExpand" Margin="10,0,0,0" />
                                         <Label Text="{Binding MaxDistanceInMeter, StringFormat='{0:##0.0} km', Converter={StaticResource MeterConverter}}" VerticalOptions="CenterAndExpand" />
                                     </StackLayout>
                                     <Slider Grid.Column="1" Maximum="8891.39705" Minimum="1581.1388300" Margin="2,2,10,2" Value="{Binding MaxDistanceInMeter, Mode=TwoWay,Converter={StaticResource StretchConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" />
