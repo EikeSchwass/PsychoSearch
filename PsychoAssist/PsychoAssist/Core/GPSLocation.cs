@@ -5,16 +5,17 @@ namespace PsychoAssist.Core
 {
     public class GPSLocation
     {
-        public static GPSLocation Zero { get; } = new GPSLocation(0, 0);
         [XmlAttribute]
         public double Longitude { get; set; }
         [XmlAttribute]
         public double Latitude { get; set; }
 
+        public static GPSLocation Zero { get; } = new GPSLocation(0, 0);
+
         public GPSLocation(double latitude, double longitude)
         {
-            Longitude = latitude;
-            Latitude = longitude;
+            Longitude = longitude;
+            Latitude = latitude;
         }
 
         public GPSLocation()
@@ -23,20 +24,31 @@ namespace PsychoAssist.Core
             Latitude = 0;
         }
 
-        //From https://www.movable-type.co.uk/scripts/latlong.html
-        public static double GetDistanceInMeter(GPSLocation location1, GPSLocation location2)
+        public override string ToString()
         {
-            const double radius = 6371000;
-            var latRad1 = ToRadians(location1.Latitude);
-            var latRad2 = ToRadians(location2.Latitude);
-            var deltaLat = ToRadians(location2.Latitude - location1.Latitude);
-            var deltaLong = ToRadians(location2.Longitude - location1.Longitude);
+            return $"{Latitude}|{Longitude}";
+        }
 
-            var a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2);
-            a += Math.Cos(latRad1) * Math.Cos(latRad2) * Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
-            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            var d = radius * c;
-            return d;
+        public bool Equals(GPSLocation other)
+        {
+            return Longitude.Equals(other.Longitude) && Latitude.Equals(other.Latitude);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            return obj is GPSLocation && Equals((GPSLocation)obj);
+        }
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                // ReSharper disable once NonReadonlyMemberInGetHashCode
+                var i = Longitude.GetHashCode() * 397;
+                return i ^ Latitude.GetHashCode();
+            }
         }
 
         public static bool operator ==(GPSLocation left, GPSLocation right)
@@ -54,31 +66,20 @@ namespace PsychoAssist.Core
             return GetDistanceInMeter(location1, location2);
         }
 
-        public bool Equals(GPSLocation other)
+        //From https://www.movable-type.co.uk/scripts/latlong.html
+        public static double GetDistanceInMeter(GPSLocation location1, GPSLocation location2)
         {
-            return Longitude.Equals(other.Longitude) && Latitude.Equals(other.Latitude);
-        }
+            const double radius = 6371000;
+            var latRad1 = ToRadians(location1.Latitude);
+            var latRad2 = ToRadians(location2.Latitude);
+            var deltaLat = ToRadians(location2.Latitude - location1.Latitude);
+            var deltaLong = ToRadians(location2.Longitude - location1.Longitude);
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return false;
-            return obj is GPSLocation location && Equals(location);
-        }
-        // ReSharper disable once NonReadonlyMemberInGetHashCode
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                // ReSharper disable once NonReadonlyMemberInGetHashCode
-                var i = Longitude.GetHashCode() * 397;
-                return i ^ Latitude.GetHashCode();
-            }
-        }
-
-        public override string ToString()
-        {
-            return $"{Latitude:#0.00000}|{Longitude:#0.00000}";
+            var a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2);
+            a += Math.Cos(latRad1) * Math.Cos(latRad2) * Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            var d = radius * c;
+            return d;
         }
 
         private static double ToRadians(double x)

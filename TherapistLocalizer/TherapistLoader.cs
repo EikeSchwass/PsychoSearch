@@ -84,7 +84,10 @@ namespace TherapistLocalizer
                 Debug.Assert(tds.Length == 2);
                 var telefoneNumber = tds.First().GetDecodedInnerText().Simplify();
                 var officeHours = new List<OfficeHour>();
-                office.ContactTimes.TelefoneOfficeHours.Add(new KeyValuePair<TelefoneNumber, List<OfficeHour>>(new TelefoneNumber { Number = telefoneNumber, Type = TelefoneNumber.TelefoneNumberType.Telefon }, officeHours));
+                office.ContactTimes.Add(new ContactTime{
+                    TelefoneNumber = new TelefoneNumber { Number = telefoneNumber, Type = TelefoneNumber.TelefoneNumberType.Telefon },
+                    OfficeHours = officeHours
+                });
                 var parsedTimes = ParseContactTimes(tds.Last());
                 officeHours.AddRange(parsedTimes);
             }
@@ -272,7 +275,7 @@ namespace TherapistLocalizer
                     }
                 }
             }
-            var list = qualifications.ToList();
+            var list = qualifications.Select(kvp => new Qualification { Category = kvp.Key, Content = kvp.Value }).ToList();
             therapist.Qualifications = list;
         }
 

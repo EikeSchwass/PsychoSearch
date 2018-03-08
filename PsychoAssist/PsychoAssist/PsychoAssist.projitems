@@ -16,13 +16,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Core\Address.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Core\ContactTimes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\ContactTime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Gender.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\GPSLocation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Office.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\OfficeHour.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Core\Qualification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\TelefoneNumber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Therapist.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FilteredTherapistCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GenderImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GenderLanguageConverter.cs" />

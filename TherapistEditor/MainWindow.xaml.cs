@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Serialization;
 using Core;
 using HtmlAgilityPack;
 using static System.Diagnostics.Debug;
@@ -29,6 +30,16 @@ namespace TherapistEditor
             path = Path.Combine(path, "TherapistSites");
             Progress<double> progressReporter = new Progress<double>(d => LoadingProgressBar.Value = d);
             var therapists = await Task.Run(() => LoadTherapistsFromDirectory(path, progressReporter));
+            SaveTherapists(therapists, @"G:\Dokumente\Visual Studio\Projects\PsychoSearch\therapists2.psycho");
+        }
+
+        private void SaveTherapists(Therapist[] therapists, string path)
+        {
+            using (FileStream fs = new FileStream(path, FileMode.Create))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Therapist[]));
+                serializer.Serialize(fs, therapists);
+            }
         }
 
         private Therapist[] LoadTherapistsFromDirectory(string path, IProgress<double> progressReporter)

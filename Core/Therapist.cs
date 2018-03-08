@@ -16,7 +16,7 @@ namespace Core
         public string Title { get; set; } = "";
         public string FullName => Name + " " + FamilyName;
         public List<string> Languages { get; set; } = new List<string>();
-        public List<KeyValuePair<string, List<string>>> Qualifications { get; set; } = new List<KeyValuePair<string, List<string>>>();
+        public List<Qualification> Qualifications { get; set; } = new List<Qualification>();
         public List<TelefoneNumber> TelefoneNumbers { get; set; } = new List<TelefoneNumber>();
         [XmlAttribute]
         public long ID { get; set; }
@@ -40,6 +40,7 @@ namespace Core
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             return $"{gender} {Title} {FullName}".Trim();
         }
     }

@@ -7,7 +7,7 @@ namespace Core
         public Address Address { get; set; } = new Address();
         public List<TelefoneNumber> TelefoneNumbers { get; set; } = new List<TelefoneNumber>();
         public List<OfficeHour> OfficeHours { get; set; } = new List<OfficeHour>();
-        public ContactTimes ContactTimes { get; set; } = new ContactTimes();
+        public List<ContactTime> ContactTimes { get; set; } = new List<ContactTime>();
         public string Name { get; set; } = "";
         public GPSLocation Location { get; set; }
     }

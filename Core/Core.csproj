@@ -54,11 +54,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Address.cs" />
-    <Compile Include="ContactTimes.cs" />
+    <Compile Include="ContactTime.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="GPSLocation.cs" />
     <Compile Include="Office.cs" />
     <Compile Include="OfficeHour.cs" />
+    <Compile Include="Qualification.cs" />
     <Compile Include="TelefoneNumber.cs" />
     <Compile Include="Therapist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

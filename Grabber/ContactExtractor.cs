@@ -59,9 +59,9 @@ namespace Grabber
             return address;
         }
 
-        private static ContactTimes ParseContactTimes(HtmlElement contactHours)
+        private static List<ContactTime> ParseContactTimes(HtmlElement contactHours)
         {
-            ContactTimes contactTimes = new ContactTimes();
+            List<ContactTime> contactTimes = new List<ContactTime>();
             if (string.IsNullOrWhiteSpace(contactHours.InnerText))
                 return contactTimes;
 
@@ -72,7 +72,7 @@ namespace Grabber
             {
                 var number = ParseTelefoneNumber(telefoneRow.Children[0].InnerText);
                 var timeTable = ParseOfficeHoursFromTable(telefoneRow.Children[1].Children[0].Children[0].Children.OfType<HtmlElement>().ToArray());
-                contactTimes.TelefoneOfficeHours.Add(new KeyValuePair<TelefoneNumber, List<OfficeHour>>(number, timeTable.ToList()));
+                contactTimes.Add(new ContactTime { TelefoneNumber = number, OfficeHours = timeTable.ToList() });
             }
             return contactTimes;
         }
