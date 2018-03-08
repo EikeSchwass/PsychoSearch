@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using PsychoAssist.Core;
-using PsychoAssist.Localization;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PsychoAssist.Pages
@@ -14,14 +12,15 @@ namespace PsychoAssist.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class BrowseTherapistsPage
     {
-        public BrowseTherapistsPage()
+        public BrowseTherapistsPage(TherapistFilter filter)
         {
             InitializeComponent();
+            BindingContext = filter;
         }
-        
+
         private async Task UpdateLocation()
         {
-            var filter = App.Instance.TherapistCollection.Filter;
+            var filter = (TherapistFilter)BindingContext;
             if (Equals(filter.UserLocation, GPSLocation.Zero))
                 filter.UserLocation = null;
             var currentUserLocation = filter.UserLocation;
@@ -78,20 +77,19 @@ namespace PsychoAssist.Pages
 
         private async void SearchButtonClicked(object sender, EventArgs e)
         {
-            var ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
+            var filter = (TherapistFilter)BindingContext;
             var therapistCollection = App.Instance.TherapistCollection;
-            var filter = therapistCollection.Filter;
             var languageFile = App.Instance.LanguageFile;
             if (filter.UserLocation == null || filter.UserLocation == GPSLocation.Zero)
             {
-                var accepted = await DisplayAlert(languageFile.GetString("nolocationtitle", ci), languageFile.GetString("nolocationmessage", ci), languageFile.GetString("nolocationaccept", ci), languageFile.GetString("nolocationcancel", ci));
+                var accepted = await DisplayAlert(languageFile.GetString("nolocationtitle"), languageFile.GetString("nolocationmessage"), languageFile.GetString("nolocationaccept"), languageFile.GetString("nolocationcancel"));
                 if (!accepted)
                     return;
             }
 
-            var filteredTherapists = therapistCollection.AllTherapists.Where(t => therapistCollection.Filter.Allows(t));
+            var filteredTherapists = therapistCollection.AllTherapists.Where(t => filter.Allows(t));
 
-            var filteredTherapistPage = new FilteredTherapistPage(filteredTherapists);
+            var filteredTherapistPage = new FilteredTherapistPage(filter, filteredTherapists);
             App.Instance.PushPage(filteredTherapistPage);
         }
 
@@ -99,5 +97,6 @@ namespace PsychoAssist.Pages
         {
             return App.Instance.PopPage();
         }
+
     }
 }

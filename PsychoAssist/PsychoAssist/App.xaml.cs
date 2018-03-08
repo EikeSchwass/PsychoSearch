@@ -32,13 +32,13 @@ namespace PsychoAssist
             var languages = LoadLanguages();
             
             LanguageFile = new LanguageFile(languages);
-            MainPage = new StartPage();
+            MainPage = new StartPage(TherapistCollection.AllTherapists);
             Pages.Push(MainPage);
-            //CheckForDuplicates();
-
-            var strings = TherapistCollection.AllTherapists.SelectMany(t => t.Languages).Distinct().OrderBy(s=>s).ToArray();
-            var qualifications = TherapistCollection.AllTherapists.SelectMany(t => t.Qualifications).SelectMany(q=>q.Content).Distinct().OrderBy(s => s).ToArray();
+            
         }
+
+#if CHECK_FOR_DUPLICATES
+
         private void CheckForDuplicates()
         {
             var dublicates = TherapistCollection.AllTherapists.GroupBy(t => t.ID).Where(g => g.Count() > 1).ToArray();
@@ -55,6 +55,8 @@ namespace PsychoAssist
                 }
             }
         }
+
+#endif
 
         private bool AreEqual(Therapist t1, Therapist t2)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
@@ -11,15 +12,36 @@ namespace Merger
     {
         private static string LocationPath { get; } = @"G:\Dokumente\Visual Studio\Projects\PsychoSearch\therapistswithlocation.psycho";
         private static string CategoryPath { get; } = @"G:\Dokumente\Visual Studio\Projects\PsychoSearch\therapists2.psycho";
-        private static string ResultPath { get; } = @"G:\Dokumente\Visual Studio\Projects\PsychoSearch\therapists.psycho";
+        private static string ResultPath { get; } = @"G:\Dokumente\Visual Studio\Projects\PsychoSearch\PsychoAssist\PsychoAssist\therapistsMerged.psycho";
+        private static string TherapistsPath { get; } = @"G:\Dokumente\Visual Studio\Projects\PsychoSearch\PsychoAssist\PsychoAssist\therapists.psycho";
 
         public static void Main(string[] args)
         {
+            Therapist[] therapists = LoadTherapists(TherapistsPath);
+
+            /*
             Therapist[] therapistsWithLocation = LoadTherapists(LocationPath);
             Therapist[] therapistsWithCategories = LoadTherapists(CategoryPath);
 
             var mergedTherapists = MergeCategoryAndLocation(therapistsWithLocation, therapistsWithCategories);
             SaveTherapists(mergedTherapists, ResultPath);
+            */
+
+            /*
+             * SaveTherapists(MergeTherapists(therapists), ResultPath);
+            */
+            
+        }
+
+        private static Therapist[] MergeTherapists(Therapist[] therapists)
+        {
+            List<Therapist> result = new List<Therapist>();
+            var singleTherapsists = therapists.GroupBy(t => t.ID).Select(g => g.First()).ToList();
+            result.AddRange(singleTherapsists);
+
+            Debug.Assert(result.Count == therapists.Select(t => t.ID).Distinct().Count());
+
+            return result.ToArray();
         }
 
         private static Therapist[] LoadTherapists(string path)

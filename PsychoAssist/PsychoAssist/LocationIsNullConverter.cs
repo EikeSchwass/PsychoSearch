@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using PsychoAssist.Core;
-using PsychoAssist.Localization;
 using Xamarin.Forms;
 
 namespace PsychoAssist
@@ -10,13 +9,15 @@ namespace PsychoAssist
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
             var location = (GPSLocation)value;
             if (location == null)
-                return App.Instance.LanguageFile.GetString("locationloading", ci);
+                return App.Instance.LanguageFile.GetString("locationnull");
 
             if (Equals(location, GPSLocation.Zero))
-                return App.Instance.LanguageFile.GetString("locationnotfound", ci);
+                return App.Instance.LanguageFile.GetString("locationnotfound");
+
+            if (Equals(location, GPSLocation.One))
+                return App.Instance.LanguageFile.GetString("locationloading");
 
             return location.ToString();
         }

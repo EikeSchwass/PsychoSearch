@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using PsychoAssist.Core;
-using PsychoAssist.Localization;
 using Xamarin.Forms;
 
 namespace PsychoAssist
@@ -10,16 +9,15 @@ namespace PsychoAssist
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
             var gender = (Gender)value;
             switch (gender)
             {
                 case Gender.Male:
-                    return App.Instance.LanguageFile.GetString("male", ci);
+                    return App.Instance.LanguageFile.GetString("male");
                 case Gender.Female:
-                    return App.Instance.LanguageFile.GetString("female", ci);
+                    return App.Instance.LanguageFile.GetString("female");
                 case Gender.Unknown:
-                    return App.Instance.LanguageFile.GetString("dontcare", ci);
+                    return App.Instance.LanguageFile.GetString("dontcare");
                 default:
                     throw new ArgumentOutOfRangeException();
             }

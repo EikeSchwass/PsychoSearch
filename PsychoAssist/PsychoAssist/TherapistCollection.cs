@@ -11,7 +11,6 @@ namespace PsychoAssist
     {
         public ObservableCollection<Therapist> StarredTherapists { get; } = new ObservableCollection<Therapist>();
         public ReadOnlyCollection<Therapist> AllTherapists { get; }
-        public TherapistFilter Filter { get; }
 
         public TherapistCollection()
         {
@@ -23,7 +22,6 @@ namespace PsychoAssist
                 var therapists = (Therapist[])serializer.Deserialize(psychoStream ?? throw new InvalidOperationException());
                 therapists = therapists.OrderBy(t => t.FamilyName).ThenBy(t => t.Name).ToArray();
                 AllTherapists = new ReadOnlyCollection<Therapist>(therapists);
-                Filter = new TherapistFilter();
             }
         }
 

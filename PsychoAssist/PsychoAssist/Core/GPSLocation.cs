@@ -11,6 +11,7 @@ namespace PsychoAssist.Core
         public double Latitude { get; set; }
 
         public static GPSLocation Zero { get; } = new GPSLocation(0, 0);
+        public static GPSLocation One { get; } = new GPSLocation(1, 1);
 
         public GPSLocation(double latitude, double longitude)
         {

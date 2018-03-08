@@ -1,68 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using PsychoAssist.Core;
 using PsychoAssist.Droid.Annotations;
+using Address = Plugin.Geolocator.Abstractions.Address;
 
 namespace PsychoAssist
 {
     public class TherapistFilter : INotifyPropertyChanged
     {
-        private bool english;
-        private bool french;
         private Gender gender = Gender.Unknown;
         private double maxDistanceInMeter = 2500;
-        private bool russian;
-        private bool spanish;
-        private Plugin.Geolocator.Abstractions.Address userAddress;
+        private Address userAddress;
         private GPSLocation userLocation;
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public bool English
-        {
-            get => english;
-            set
-            {
-                if (value == english)
-                    return;
-                english = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool Spanish
-        {
-            get => spanish;
-            set
-            {
-                if (value == spanish)
-                    return;
-                spanish = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool French
-        {
-            get => french;
-            set
-            {
-                if (value == french)
-                    return;
-                french = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool Russian
-        {
-            get => russian;
-            set
-            {
-                if (value == russian)
-                    return;
-                russian = value;
-                OnPropertyChanged();
-            }
-        }
-
         public Gender Gender
         {
             get => gender;
@@ -74,6 +27,8 @@ namespace PsychoAssist
                 OnPropertyChanged();
             }
         }
+        public ReadOnlyCollection<Language> Languages { get; }
+        public ReadOnlyCollection<QualificationEntry> Qualifications { get; }
 
         public GPSLocation UserLocation
         {
@@ -86,7 +41,7 @@ namespace PsychoAssist
                 OnPropertyChanged();
             }
         }
-        public Plugin.Geolocator.Abstractions.Address UserAddress
+        public Address UserAddress
         {
             get => userAddress;
             set
@@ -109,17 +64,45 @@ namespace PsychoAssist
             }
         }
 
+        public TherapistFilter(IEnumerable<Therapist> allTherapists)
+        {
+            var therapists = allTherapists.ToArray();
+            var languageFile = App.Instance.LanguageFile;
+            var languages = therapists.SelectMany(t => t.Languages).Distinct().Select(s => new Language
+            {
+                DisplayName = languageFile.TranslateLanguage(s),
+                Name = s,
+                Set = false
+            }).OrderBy(s => s.DisplayName).ThenBy(s => s.Name).ToArray();
+
+            var qualifications = new List<QualificationEntry>();
+            foreach (var therapist in therapists)
+            {
+                foreach (var qualification in therapist.Qualifications)
+                {
+                    foreach (var qualificationName in qualification.Content)
+                    {
+                        var qualificationEntry = new QualificationEntry
+                        {
+                            Category = qualification.Category,
+                            Name = qualificationName,
+                            DisplayCategory = languageFile.TranslateCategory(qualification.Category),
+                            DisplayName = languageFile.TranslateQualityName(qualificationName),
+                            Set = false
+                        };
+                        if (!qualifications.Contains(qualificationEntry))
+                            qualifications.Add(qualificationEntry);
+                    }
+                }
+            }
+
+            Languages = new ReadOnlyCollection<Language>(languages);
+            Qualifications = new ReadOnlyCollection<QualificationEntry>(qualifications.OrderBy(q => q.DisplayName).ThenBy(q => q.DisplayCategory).ToList());
+
+        }
+
         public bool Allows(Therapist therapist)
         {
-            if (English && !therapist.Languages.Contains("Englisch"))
-                return false;
-            if (Spanish && !therapist.Languages.Contains("Spanisch"))
-                return false;
-            if (French && !therapist.Languages.Contains("Französisch"))
-                return false;
-            if (Russian && !therapist.Languages.Contains("Russisch"))
-                return false;
-
             if (Gender == Gender.Male && therapist.Gender == Gender.Female)
                 return false;
             if (Gender == Gender.Female && therapist.Gender == Gender.Male)

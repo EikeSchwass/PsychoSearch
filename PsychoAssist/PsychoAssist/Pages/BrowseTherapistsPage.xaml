@@ -2,9 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:localization="clr-namespace:PsychoAssist.Localization;assembly=PsychoAssist.Android"
-             xmlns:psychoAssist="clr-namespace:PsychoAssist;assembly=PsychoAssist.Android"
              xmlns:core="clr-namespace:PsychoAssist.Core;assembly=PsychoAssist.Android"
-             x:Class="PsychoAssist.Pages.BrowseTherapistsPage" BindingContext="{x:Static psychoAssist:App.Instance}">
+             x:Class="PsychoAssist.Pages.BrowseTherapistsPage">
     <ContentPage.Resources>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -13,7 +12,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <ScrollView Grid.Row="0" BindingContext="{Binding Path=TherapistCollection.Filter}">
+            <ScrollView Grid.Row="0">
                 <TableView Intent="Settings">
                     <TableRoot>
                         <TableSection Title="{localization:Translate distance}">

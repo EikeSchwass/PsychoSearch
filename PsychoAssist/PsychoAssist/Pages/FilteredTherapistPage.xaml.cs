@@ -10,10 +10,10 @@ namespace PsychoAssist.Pages
     public partial class FilteredTherapistPage
     {
         private ObservableCollection<Therapist> Therapists { get; }
-        public FilteredTherapistPage(IEnumerable<Therapist> therapists)
+        public FilteredTherapistPage(TherapistFilter filter, IEnumerable<Therapist> therapists)
         {
             InitializeComponent();
-            var userLocation = App.Instance.TherapistCollection.Filter.UserLocation;
+            var userLocation = filter.UserLocation;
             if (userLocation == null || userLocation == GPSLocation.Zero)
                 Therapists = new ObservableCollection<Therapist>(therapists);
             else

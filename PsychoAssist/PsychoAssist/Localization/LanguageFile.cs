@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Xml;
+using Xamarin.Forms;
 
 namespace PsychoAssist.Localization
 {
@@ -16,8 +16,9 @@ namespace PsychoAssist.Localization
             Parse(languageFileContent);
         }
 
-        public string GetString(string key, CultureInfo cultureInfo)
+        public string GetString(string key)
         {
+            var cultureInfo = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
             try
             {
                 var translations = Entries[key.ToLower()];
@@ -33,6 +34,19 @@ namespace PsychoAssist.Localization
                 return "KEY NOT FOUND";
             }
         }
+        public string TranslateCategory(string category)
+        {
+            return category;
+        }
+
+        public string TranslateLanguage(string language)
+        {
+            return language;
+        }
+        public string TranslateQualityName(string qualificationName)
+        {
+            return qualificationName;
+        }
 
         private void Parse(string languageFileContent)
         {
@@ -42,6 +56,7 @@ namespace PsychoAssist.Localization
                 xmlReader.Read();
             }
             while (xmlReader.Name != "strings");
+
             while (true)
             {
                 do
@@ -51,6 +66,7 @@ namespace PsychoAssist.Localization
                         return;
                 }
                 while (!xmlReader.IsStartElement("entry"));
+
                 string currentKey = xmlReader["key"]?.ToLower() ?? "";
                 Entries.Add(currentKey, new Dictionary<string, string>());
                 while (true)
@@ -62,6 +78,7 @@ namespace PsychoAssist.Localization
                             return;
                     }
                     while (!xmlReader.IsStartElement("value") && xmlReader.Name != "entry");
+
                     if (xmlReader.Name == "entry")
                         break;
                     var locale = xmlReader["locale"]?.ToLower() ?? "";

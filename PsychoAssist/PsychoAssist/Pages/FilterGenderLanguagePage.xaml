@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="clr-namespace:PsychoAssist.Localization;assembly=PsychoAssist.Android"
+             xmlns:core="clr-namespace:PsychoAssist.Core;assembly=PsychoAssist.Android"
+             x:Class="PsychoAssist.Pages.FilterGenderLanguagePage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollView Grid.Row="0">
+                <TableView Intent="Settings">
+                    <TableRoot>
+                        <TableSection Title="{localization:Translate gender}">
+                            <ViewCell>
+                                <Grid>
+                                    <Picker Title="{localization:Translate genderprompt}" SelectedItem="{Binding Gender, Mode=TwoWay}" ItemDisplayBinding="{Binding Converter={StaticResource GenderLanguageConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="2" >
+                                        <Picker.ItemsSource>
+                                            <x:Array Type="{x:Type core:Gender}">
+                                                <core:Gender>Male</core:Gender>
+                                                <core:Gender>Female</core:Gender>
+                                                <core:Gender>Unknown</core:Gender>
+                                            </x:Array>
+                                        </Picker.ItemsSource>
+                                    </Picker>
+                                </Grid>
+                            </ViewCell>
+                        </TableSection>
+                        <TableSection x:Name="LanguageTableSection" Title="{localization:Translate languageheader}" />
+                    </TableRoot>
+                </TableView>
+            </ScrollView>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Text="{localization:Translate back}" Clicked="BackButtonClicked" />
+                <Button Grid.Column="1" Text="{localization:Translate next}" Clicked="NextButtonClicked" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -9,16 +8,6 @@ namespace PsychoAssist.Localization
     [ContentProperty("Text")]
     public class TranslateExtension : IMarkupExtension
     {
-        private readonly CultureInfo ci;
-        
-        public TranslateExtension()
-        {
-            if (Device.RuntimePlatform == Device.iOS || Device.RuntimePlatform == Device.Android)
-            {
-                ci = DependencyService.Get<ILocalize>().GetCurrentCultureInfo();
-            }
-        }
-
         public string Text { get; set; }
 
         public object ProvideValue(IServiceProvider serviceProvider)
@@ -26,13 +15,13 @@ namespace PsychoAssist.Localization
             if (Text == null)
                 return "";
 
-            var translation = App.Instance.LanguageFile.GetString(Text, ci);
+            var translation = App.Instance.LanguageFile.GetString(Text);
 
             if (translation == null)
             {
 #if DEBUG
                 throw new ArgumentException(
-                                            $"Key '{Text}' was not found in resources for culture '{ci.Name}'.",
+                                            $"Key '{Text}' was not found in resources.",
                                             nameof(serviceProvider));
 #else
                 translation = Text; // returns the key, which GETS DISPLAYED TO THE USER

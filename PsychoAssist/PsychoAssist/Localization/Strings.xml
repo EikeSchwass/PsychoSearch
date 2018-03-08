@@ -44,9 +44,29 @@
     <value locale="en-us">Language</value>
     <value locale="de-de">Sprache</value>
   </entry>
+  <entry key="languageheader">
+    <value locale="en-us">Therapists must speak one of the selected languages</value>
+    <value locale="de-de">Therapeut muss eine der ausgewählten Sprachen beherrschen</value>
+  </entry>
+  <entry key="qualificationheader">
+    <value locale="en-us">Therapists must have all selected qualifications</value>
+    <value locale="de-de">Therapeut muss alle der ausgewählten Qualifikationen besitzen</value>
+  </entry>
+  <entry key="freetextsearch">
+    <value locale="en-us">Free text search</value>
+    <value locale="de-de">Freitextsuche</value>
+  </entry>
+  <entry key="keywordsearch">
+    <value locale="en-us">Separate keywords with spaces</value>
+    <value locale="de-de">Schlüsselwörter mit Leerzeichen trennen</value>
+  </entry>
   <entry key="locationloading">
     <value locale="en-us">Searching...</value>
     <value locale="de-de">Suche Position...</value>
+  </entry>
+  <entry key="locationnull">
+    <value locale="en-us">Tap to search for location</value>
+    <value locale="de-de">Tippen um nach Position zu suchen</value>
   </entry>
   <entry key="locationnotfound">
     <value locale="en-us">Location not Found. Tap to refresh.</value>
@@ -103,5 +123,13 @@
   <entry key="nolocationcancel">
     <value locale="en-us">No</value>
     <value locale="de-de">Nein</value>
+  </entry>
+  <entry key="back">
+    <value locale="en-us">Back</value>
+    <value locale="de-de">Zurück</value>
+  </entry>
+  <entry key="next">
+    <value locale="en-us">Next</value>
+    <value locale="de-de">Weiter</value>
   </entry>
 </strings>

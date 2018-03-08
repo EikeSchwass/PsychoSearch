@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="clr-namespace:PsychoAssist.Localization;assembly=PsychoAssist.Android"
+             x:Class="PsychoAssist.Pages.FilterLanguageTextPage">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollView>
+                <TableView Intent="Settings">
+                    <TableRoot>
+                        <TableSection Title="{localization:Translate freetextsearch}">
+                            <EntryCell x:Name="SearchEntryCell" Placeholder="{localization:Translate keywordsearch}" />
+                        </TableSection>
+                        <TableSection Title="{localization:Translate distance}">
+                            <ImageCell Tapped="GpsLocationUpdateRequested" ImageSource="gps.png" Text="{Binding UserLocation, StringFormat='{0}',Mode=OneWay, Converter={StaticResource LocationIsNullConverter}}" DetailColor="#6f6f9f" TextColor="CornflowerBlue" />
+                            <ViewCell>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{localization:Translate maxdistance}" VerticalOptions="CenterAndExpand" Margin="10,0,0,0" />
+                                        <Label Text="{Binding MaxDistanceInMeter, StringFormat='{0:##0.0} km', Converter={StaticResource MeterConverter}}" VerticalOptions="CenterAndExpand" />
+                                    </StackLayout>
+                                    <Slider Grid.Column="1" Maximum="8891.39705" Minimum="1581.1388300" Margin="2,2,10,2" Value="{Binding MaxDistanceInMeter, Mode=TwoWay,Converter={StaticResource StretchConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" />
+                                </Grid>
+                            </ViewCell>
+                        </TableSection>
+                    </TableRoot>
+                </TableView>
+            </ScrollView>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Text="{localization:Translate back}" Clicked="BackButtonClicked" Margin="5" />
+                <Button Grid.Column="1" Text="{localization:Translate next}" Clicked="NextButtonClicked" Margin="5" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
