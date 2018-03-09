@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Android.Content;
 using PsychoAssist.Core;
 using PsychoAssist.Localization;
 using PsychoAssist.Pages;
@@ -15,30 +16,30 @@ namespace PsychoAssist
         private double GPSAccuracy { get; set; } = double.MinValue;
         public static App Instance { get; private set; }
         public IApplicationDataStorage DataStorage { get; }
+        public Action<Intent> StartActivity { get; }
         public LanguageFile LanguageFile { get; }
         public TherapistCollection TherapistCollection { get; } = new TherapistCollection();
 
         private Stack<Page> Pages { get; } = new Stack<Page>();
 
-        public App(IApplicationDataStorage dataStorage)
+        public App(IApplicationDataStorage dataStorage, Action<Intent> startActivity)
         {
             if (Instance != null)
                 throw new InvalidOperationException("Only one App can exists at a time!");
             Instance = this;
             DataStorage = dataStorage;
+            StartActivity = startActivity;
 
             InitializeComponent();
 
             var languages = LoadLanguages();
-            
+
             LanguageFile = new LanguageFile(languages);
             MainPage = new StartPage(TherapistCollection.AllTherapists);
             Pages.Push(MainPage);
-            
         }
 
 #if CHECK_FOR_DUPLICATES
-
         private void CheckForDuplicates()
         {
             var dublicates = TherapistCollection.AllTherapists.GroupBy(t => t.ID).Where(g => g.Count() > 1).ToArray();
@@ -87,6 +88,7 @@ namespace PsychoAssist
                 if (t1.Offices[i] != t2.Offices[i])
                     return false;
             }
+
             for (int i = 0; i < t1.TelefoneNumbers.Count; i++)
             {
                 if (t1.TelefoneNumbers[i] != t2.TelefoneNumbers[i])
@@ -110,26 +112,16 @@ namespace PsychoAssist
                 MainPage = Pages.Peek();
                 return true;
             }
-            else
-            {
-                MainPage = Pages.Peek();
-                return false;
-            }
+
+            MainPage = Pages.Peek();
+            return false;
         }
 
-        protected override void OnResume()
-        {
-        }
+        protected override void OnResume() { }
 
-        protected override void OnSleep()
-        {
-        }
+        protected override void OnSleep() { }
 
-        protected override void OnStart()
-        {
-
-        }
-
+        protected override void OnStart() { }
 
         private string LoadLanguages()
         {

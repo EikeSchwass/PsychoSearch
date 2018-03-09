@@ -23,6 +23,7 @@ namespace PsychoAssist.Core
                 return false;
             return Equals((OfficeHour)obj);
         }
+
         public override int GetHashCode()
         {
             unchecked

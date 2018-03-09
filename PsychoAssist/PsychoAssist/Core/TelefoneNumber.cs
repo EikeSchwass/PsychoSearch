@@ -16,7 +16,7 @@ namespace PsychoAssist.Core
 
         public override string ToString()
         {
-            return $"{Number}";
+            return $"{Type}:{Number}";
         }
 
         protected bool Equals(TelefoneNumber other)

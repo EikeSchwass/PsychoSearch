@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Xml;
+using PsychoAssist.Core;
 using Xamarin.Forms;
 
 namespace PsychoAssist.Localization
@@ -37,6 +38,40 @@ namespace PsychoAssist.Localization
         public string TranslateCategory(string category)
         {
             return category;
+        }
+        public string TranslateContactType(TelefoneNumber.TelefoneNumberType telefoneNumberType)
+        {
+            switch (telefoneNumberType)
+            {
+                case TelefoneNumber.TelefoneNumberType.Mobil:
+                    return GetString("mobile");
+                case TelefoneNumber.TelefoneNumberType.Fax:
+                    return GetString("fax");
+                case TelefoneNumber.TelefoneNumberType.Telefon:
+                    return GetString("phone");
+                case TelefoneNumber.TelefoneNumberType.Webseite:
+                    return GetString("website");
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(telefoneNumberType), telefoneNumberType, null);
+            }
+        }
+        public string TranslateDayOfWeek(DayOfWeek dayOfWeek)
+        {
+            return GetString(dayOfWeek.ToString().ToLower());
+        }
+        public string TranslateGender(Gender gender)
+        {
+            switch (gender)
+            {
+                case Gender.Male:
+                    return GetString("male");
+                case Gender.Female:
+                    return GetString("female");
+                case Gender.Unknown:
+                    return GetString("dontcare");
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         public string TranslateLanguage(string language)

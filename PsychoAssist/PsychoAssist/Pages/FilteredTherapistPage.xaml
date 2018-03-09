@@ -21,7 +21,7 @@
                 </ListView.GestureRecognizers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ImageCell Text="{Binding Path=FullName}" Detail="{Binding Path=Addresses[0].FullAddress}" ImageSource="{Binding Path=Gender, Converter={StaticResource GenderImageConverter}}" TextColor="CornflowerBlue" DetailColor="#6f6f9f" />
+                        <ImageCell Text="{Binding Path=FullName}" Detail="{Binding Path=Addresses[0].FullAddress}" ImageSource="{Binding Path=Gender, Converter={StaticResource GenderImageConverter}}" TextColor="CornflowerBlue" DetailColor="#6f6f9f" Tapped="TherapistTapped" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

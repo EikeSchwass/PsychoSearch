@@ -20,36 +20,60 @@ namespace PsychoAssist.Pages
 
         protected override bool OnBackButtonPressed()
         {
+            var filter = (TherapistFilter)BindingContext;
+            filter.FreeTextSearch = SearchEntryCell.Text;
             return Back();
         }
 
         private bool Back()
         {
+            var filter = (TherapistFilter)BindingContext;
+            filter.FreeTextSearch = SearchEntryCell.Text;
             return App.Instance.PopPage();
         }
 
         private void BackButtonClicked(object sender, EventArgs e)
         {
+            var filter = (TherapistFilter)BindingContext;
+            filter.FreeTextSearch = SearchEntryCell.Text;
             Back();
         }
 
         private async void GpsLocationUpdateRequested(object sender, EventArgs e)
         {
+            var filter = (TherapistFilter)BindingContext;
             var cell = (ImageCell)sender;
-            cell.IsEnabled = false;
-            try
+            if (GPSLocation.IsNullOrSpecial(filter.UserLocation))
             {
-                await UpdateLocation();
+                cell.IsEnabled = false;
+                try
+                {
+                    await UpdateLocation();
+                }
+                finally
+                {
+                    cell.IsEnabled = true;
+                }
             }
-            finally
+            else
             {
-                cell.IsEnabled = true;
+                filter.UserLocation = null;
             }
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            var filter = (TherapistFilter)BindingContext;
+            filter.FreeTextSearch = SearchEntryCell.Text;
         }
 
         private void NextButtonClicked(object sender, EventArgs e)
         {
-            App.Instance.PushPage(new FilterGenderLanguagePage((TherapistFilter)BindingContext));
+            var filter = (TherapistFilter)BindingContext;
+            filter.FreeTextSearch = SearchEntryCell.Text;
+            var filterGenderLanguagePage = new FilterGenderLanguagePage(filter);
+            App.Instance.PushPage(filterGenderLanguagePage);
         }
 
         private async Task UpdateLocation()

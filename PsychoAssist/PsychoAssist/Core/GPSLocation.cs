@@ -5,13 +5,12 @@ namespace PsychoAssist.Core
 {
     public class GPSLocation
     {
+        public static GPSLocation Zero { get; } = new GPSLocation(0, 0);
+        public static GPSLocation One { get; } = new GPSLocation(1, 1);
         [XmlAttribute]
         public double Longitude { get; set; }
         [XmlAttribute]
         public double Latitude { get; set; }
-
-        public static GPSLocation Zero { get; } = new GPSLocation(0, 0);
-        public static GPSLocation One { get; } = new GPSLocation(1, 1);
 
         public GPSLocation(double latitude, double longitude)
         {
@@ -25,9 +24,45 @@ namespace PsychoAssist.Core
             Latitude = 0;
         }
 
-        public override string ToString()
+        //From https://www.movable-type.co.uk/scripts/latlong.html
+        public static double GetDistanceInMeter(GPSLocation location1, GPSLocation location2)
         {
-            return $"{Latitude}|{Longitude}";
+            const double radius = 6371000;
+            var latRad1 = ToRadians(location1.Latitude);
+            var latRad2 = ToRadians(location2.Latitude);
+            var deltaLat = ToRadians(location2.Latitude - location1.Latitude);
+            var deltaLong = ToRadians(location2.Longitude - location1.Longitude);
+
+            var a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2);
+            a += Math.Cos(latRad1) * Math.Cos(latRad2) * Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            var d = radius * c;
+            return d;
+        }
+        public static bool IsNullOrSpecial(GPSLocation userLocation)
+        {
+            if (userLocation == null)
+                return true;
+            if (userLocation == One)
+                return true;
+            if (userLocation == Zero)
+                return true;
+            return false;
+        }
+
+        public static bool operator ==(GPSLocation left, GPSLocation right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(GPSLocation left, GPSLocation right)
+        {
+            return !Equals(left, right);
+        }
+
+        public static double operator -(GPSLocation location1, GPSLocation location2)
+        {
+            return GetDistanceInMeter(location1, location2);
         }
 
         public bool Equals(GPSLocation other)
@@ -52,35 +87,9 @@ namespace PsychoAssist.Core
             }
         }
 
-        public static bool operator ==(GPSLocation left, GPSLocation right)
+        public override string ToString()
         {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(GPSLocation left, GPSLocation right)
-        {
-            return !Equals(left, right);
-        }
-
-        public static double operator -(GPSLocation location1, GPSLocation location2)
-        {
-            return GetDistanceInMeter(location1, location2);
-        }
-
-        //From https://www.movable-type.co.uk/scripts/latlong.html
-        public static double GetDistanceInMeter(GPSLocation location1, GPSLocation location2)
-        {
-            const double radius = 6371000;
-            var latRad1 = ToRadians(location1.Latitude);
-            var latRad2 = ToRadians(location2.Latitude);
-            var deltaLat = ToRadians(location2.Latitude - location1.Latitude);
-            var deltaLong = ToRadians(location2.Longitude - location1.Longitude);
-
-            var a = Math.Sin(deltaLat / 2) * Math.Sin(deltaLat / 2);
-            a += Math.Cos(latRad1) * Math.Cos(latRad2) * Math.Sin(deltaLong / 2) * Math.Sin(deltaLong / 2);
-            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
-            var d = radius * c;
-            return d;
+            return $"{Latitude}|{Longitude}";
         }
 
         private static double ToRadians(double x)

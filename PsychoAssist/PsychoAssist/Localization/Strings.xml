@@ -132,4 +132,84 @@
     <value locale="en-us">Next</value>
     <value locale="de-de">Weiter</value>
   </entry>
+  <entry key="monday">
+    <value locale="en-us">Monday</value>
+    <value locale="de-de">Montag</value>
+  </entry>
+  <entry key="tuesday">
+    <value locale="en-us">Tuesday</value>
+    <value locale="de-de">Dienstag</value>
+  </entry>
+  <entry key="wednesday">
+    <value locale="en-us">Wednesday</value>
+    <value locale="de-de">Mittwoch</value>
+  </entry>
+  <entry key="thursday">
+    <value locale="en-us">Thursday</value>
+    <value locale="de-de">Donnerstag</value>
+  </entry>
+  <entry key="friday">
+    <value locale="en-us">Friday</value>
+    <value locale="de-de">Freitag</value>
+  </entry>
+  <entry key="saturday">
+    <value locale="en-us">Saturday</value>
+    <value locale="de-de">Samstag</value>
+  </entry>
+  <entry key="Sunday">
+    <value locale="en-us">Sunday</value>
+    <value locale="de-de">Sonntag</value>
+  </entry>
+  <entry key="contactheader">
+    <value locale="en-us">General Contact Information</value>
+    <value locale="de-de">Allgemeine Kontaktinformationen</value>
+  </entry>
+  <entry key="qualifications">
+    <value locale="en-us">Qualifications</value>
+    <value locale="de-de">Qualifikationen</value>
+  </entry>
+  <entry key="websiteheader">
+    <value locale="en-us">View on KVN-Website</value>
+    <value locale="de-de">Auf Webseite des KVN anzeigen</value>
+  </entry>
+  <entry key="mobile">
+    <value locale="en-us">Mobile</value>
+    <value locale="de-de">Mobil</value>
+  </entry>
+  <entry key="fax">
+    <value locale="en-us">Fax</value>
+    <value locale="de-de">Fax</value>
+  </entry>
+  <entry key="phone">
+    <value locale="en-us">Phone</value>
+    <value locale="de-de">Telefon</value>
+  </entry>
+  <entry key="website">
+    <value locale="en-us">Website</value>
+    <value locale="de-de">Webseite</value>
+  </entry>
+  <entry key="nocontactinformation">
+    <value locale="en-us">No general contact information</value>
+    <value locale="de-de">Keine allgemeinen Kontaktinformationen</value>
+  </entry>
+  <entry key="nolanguages">
+    <value locale="en-us">No Languages other than German</value>
+    <value locale="de-de">Keine Sprachen bis auf Deutsch</value>
+  </entry>
+  <entry key="officeheader">
+    <value locale="en-us">Offices</value>
+    <value locale="de-de">Praxen</value>
+  </entry>
+  <entry key="contact">
+    <value locale="en-us">Contact</value>
+    <value locale="de-de">Kontakt</value>
+  </entry>
+  <entry key="officehours">
+    <value locale="en-us">Office Hours</value>
+    <value locale="de-de">Praxiszeiten</value>
+  </entry>
+  <entry key="contacttimes">
+    <value locale="en-us">Contact times</value>
+    <value locale="de-de">Sprechzeiten</value>
+  </entry>
 </strings>

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
+using PsychoAssist.Core;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,7 +27,9 @@ namespace PsychoAssist.Pages
 
         protected override bool OnBackButtonPressed()
         {
-            return Back();
+            if (!ActivityIndicator.IsRunning)
+                return Back();
+            return true;
         }
 
         private bool Back()
@@ -38,14 +41,30 @@ namespace PsychoAssist.Pages
         {
             Back();
         }
-        private void NextButtonClicked(object sender, EventArgs e)
+
+        private async void NextButtonClicked(object sender, EventArgs e)
         {
             var filter = (TherapistFilter)BindingContext;
+
 #if QUALIFICATION_FILTER
             App.Instance.PushPage(new FilterQualificationPage(filter));
 #else
-            var therapists = App.Instance.TherapistCollection.AllTherapists.Where(t => filter.Allows(t));
-            App.Instance.PushPage(new FilteredTherapistPage(filter, therapists)); ;
+            IsEnabled = false;
+            ActivityIndicatorGrid.IsVisible = true;
+            ActivityIndicator.IsRunning = true;
+            IEnumerable<Therapist> therapists;
+            try
+            {
+                therapists = await App.Instance.TherapistCollection.FilterAsync(filter);
+            }
+            finally
+            {
+                IsEnabled = true;
+                ActivityIndicatorGrid.IsVisible = false;
+                ActivityIndicator.IsRunning = false;
+            }
+
+            App.Instance.PushPage(new FilteredTherapistPage(filter, therapists));
 #endif
         }
     }

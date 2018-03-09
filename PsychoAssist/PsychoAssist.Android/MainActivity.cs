@@ -17,7 +17,7 @@ namespace PsychoAssist.Droid
             base.OnCreate(bundle);
 
             Forms.Init(this, bundle);
-            LoadApplication(new App(new AndroidDataStorage()));
+            LoadApplication(new App(new AndroidDataStorage(), StartActivity));
         }
     }
 }

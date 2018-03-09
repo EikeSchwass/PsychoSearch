@@ -16,7 +16,7 @@
                         <TableSection Title="{localization:Translate gender}">
                             <ViewCell>
                                 <Grid>
-                                    <Picker Title="{localization:Translate genderprompt}" SelectedItem="{Binding Gender, Mode=TwoWay}" ItemDisplayBinding="{Binding Converter={StaticResource GenderLanguageConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="2" >
+                                    <Picker Title="{localization:Translate genderprompt}" SelectedItem="{Binding Gender, Mode=TwoWay}" ItemDisplayBinding="{Binding Converter={StaticResource GenderLanguageConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="16,2" >
                                         <Picker.ItemsSource>
                                             <x:Array Type="{x:Type core:Gender}">
                                                 <core:Gender>Male</core:Gender>
@@ -39,6 +39,9 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Text="{localization:Translate back}" Clicked="BackButtonClicked" />
                 <Button Grid.Column="1" Text="{localization:Translate next}" Clicked="NextButtonClicked" />
+            </Grid>
+            <Grid x:Name="ActivityIndicatorGrid" Grid.Row="0" Grid.RowSpan="2" BackgroundColor="#bb000000" IsVisible="False">
+                <ActivityIndicator x:Name="ActivityIndicator" HorizontalOptions="CenterAndExpand"  VerticalOptions="CenterAndExpand" />
             </Grid>
         </Grid>
     </ContentPage.Content>

@@ -1,9 +1,79 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using PsychoAssist.Core;
 
 namespace PsychoAssist
 {
     public static class ExtensionMethods
     {
+        public static string GetDescriptionText(this Therapist therapist)
+        {
+            var stringBuilder = new StringBuilder();
+            var languageFile = App.Instance.LanguageFile;
+
+            var qualification = string.Join(",", therapist.Qualifications.SelectMany(q => q.Content).Select(q => languageFile.TranslateCategory(q.ToLower())));
+            var fullName = therapist.FullName;
+            var gender = languageFile.TranslateGender(therapist.Gender);
+            var website = therapist.KVNWebsite;
+            var languages = string.Join(",", therapist.Languages.Select(s => languageFile.TranslateLanguage(s.ToLower())));
+            var offices = string.Join(",", therapist.Offices.Select(o => o.GetDescriptionText()));
+            var contact = string.Join(",", therapist.TelefoneNumbers.Select(t => t.ToString().ToLower()));
+            var id = therapist.ID.ToString().ToLower();
+
+            stringBuilder.AppendLine(id);
+            stringBuilder.AppendLine(fullName);
+            stringBuilder.AppendLine(website);
+            stringBuilder.AppendLine(gender);
+            stringBuilder.AppendLine(contact);
+            stringBuilder.AppendLine(offices);
+            stringBuilder.AppendLine(languages);
+            stringBuilder.AppendLine(qualification);
+
+            var result = stringBuilder.ToString();
+            return result;
+        }
+
+        public static string GetDescriptionText(this Office office)
+        {
+            var stringBuilder = new StringBuilder();
+
+            var location = office.Location.ToString().ToLower();
+            var address = office.Address.ToString();
+            var name = office.Name.ToLower();
+            var telefoneNumbers = string.Join(",", office.TelefoneNumbers.Select(t => t.ToString().ToLower()));
+            var officeHours = string.Join(",", office.OfficeHours.Select(o => o.GetDescriptionText().ToLower()));
+            var contactTimes = string.Join(",", office.ContactTimes.Select(c => $"{c.TelefoneNumber.ToString()}:{string.Join(",", c.OfficeHours.Select(o => o.GetDescriptionText().ToLower()))}"));
+
+            stringBuilder.AppendLine(name);
+            stringBuilder.AppendLine(address);
+            stringBuilder.AppendLine(location);
+            stringBuilder.AppendLine(telefoneNumbers);
+            stringBuilder.AppendLine(officeHours);
+            stringBuilder.AppendLine(contactTimes);
+
+            var result = stringBuilder.ToString();
+            return result;
+        }
+
+        public static string GetDescriptionText(this OfficeHour officeHour)
+        {
+            var stringBuilder = new StringBuilder();
+            var languageFile = App.Instance.LanguageFile;
+
+            var dayOfWeek = languageFile.TranslateDayOfWeek(officeHour.DayOfWeek);
+            var hourFrom = officeHour.From.ToString(CultureInfo.InvariantCulture);
+            var to = officeHour.To.ToString(CultureInfo.InvariantCulture);
+
+            stringBuilder.AppendLine(dayOfWeek);
+            stringBuilder.AppendLine(hourFrom);
+            stringBuilder.AppendLine(to);
+
+            var result = stringBuilder.ToString();
+            return result;
+        }
+
         public static bool ListEquals<T>(this object o, List<T> list1, List<T> list2)
         {
             if (list1.Count != list2.Count)

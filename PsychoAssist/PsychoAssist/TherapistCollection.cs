@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using PsychoAssist.Core;
 
@@ -29,6 +30,16 @@ namespace PsychoAssist
         {
             var starredString = string.Join("|", StarredTherapists.Select(t => t.ID));
             App.Instance.DataStorage.SaveValue("starredtherapists", starredString);
+        }
+
+        public Task<Therapist[]> FilterAsync(TherapistFilter filter)
+        {
+            return Task.Run(() => Filter(filter));
+        }
+
+        public Therapist[] Filter(TherapistFilter filter)
+        {
+            return AllTherapists.Where(filter.Allows).ToArray();
         }
     }
 }

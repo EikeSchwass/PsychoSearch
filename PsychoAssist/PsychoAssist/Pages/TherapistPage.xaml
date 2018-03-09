@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:core="clr-namespace:PsychoAssist.Core;assembly=PsychoAssist.Android"
+             xmlns:psychoAssist="clr-namespace:PsychoAssist;assembly=PsychoAssist.Android"
+             xmlns:localization="clr-namespace:PsychoAssist.Localization;assembly=PsychoAssist.Android"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance {x:Type core:Therapist}}"
+             x:Class="PsychoAssist.Pages.TherapistPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <psychoAssist:GenderImageConverter x:Key="GenderImageConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Margin="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="6" Source="{Binding Gender, Converter={StaticResource GenderImageConverter}}" />
+                <Label Grid.Row="0" Grid.Column="1" FontSize="Small" Text="{Binding Title}" Margin="1" />
+                <Label Grid.Row="1" Grid.Column="1" FontSize="Medium"  Text="{Binding FullName}" Margin="1" />
+            </Grid>
+            <Label Grid.Row="1" FontSize="Small" TextColor="Blue" Text="{localization:Translate websiteheader}" Margin="4">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="KVNLinkTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+            <TableView Grid.Row="2" HasUnevenRows="True">
+                <TableRoot x:Name="TableRoot" />
+            </TableView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

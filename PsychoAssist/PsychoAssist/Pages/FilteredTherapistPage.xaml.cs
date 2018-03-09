@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using PsychoAssist.Core;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PsychoAssist.Pages
@@ -24,6 +26,14 @@ namespace PsychoAssist.Pages
         protected override bool OnBackButtonPressed()
         {
             return App.Instance.PopPage();
+        }
+
+        private void TherapistTapped(object sender, EventArgs e)
+        {
+            var imageCell = (ImageCell)sender;
+            var therapist = (Therapist)imageCell.BindingContext;
+            var therapistPage = new TherapistPage(therapist);
+            App.Instance.PushPage(therapistPage);
         }
     }
 }

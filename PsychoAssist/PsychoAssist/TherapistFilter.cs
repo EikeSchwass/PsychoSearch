@@ -11,25 +11,28 @@ namespace PsychoAssist
 {
     public class TherapistFilter : INotifyPropertyChanged
     {
+        private string freeTextSearch;
         private Gender gender = Gender.Unknown;
         private double maxDistanceInMeter = 2500;
         private Address userAddress;
         private GPSLocation userLocation;
+
         public event PropertyChangedEventHandler PropertyChanged;
-        public Gender Gender
-        {
-            get => gender;
-            set
-            {
-                if (value == gender)
-                    return;
-                gender = value;
-                OnPropertyChanged();
-            }
-        }
+
         public ReadOnlyCollection<Language> Languages { get; }
         public ReadOnlyCollection<QualificationEntry> Qualifications { get; }
 
+        public string FreeTextSearch
+        {
+            get => freeTextSearch;
+            set
+            {
+                if (value == freeTextSearch)
+                    return;
+                freeTextSearch = value;
+                OnPropertyChanged();
+            }
+        }
         public GPSLocation UserLocation
         {
             get => userLocation;
@@ -63,17 +66,33 @@ namespace PsychoAssist
                 OnPropertyChanged();
             }
         }
+        public Gender Gender
+        {
+            get => gender;
+            set
+            {
+                if (value == gender)
+                    return;
+                gender = value;
+                OnPropertyChanged();
+            }
+        }
 
         public TherapistFilter(IEnumerable<Therapist> allTherapists)
         {
             var therapists = allTherapists.ToArray();
             var languageFile = App.Instance.LanguageFile;
-            var languages = therapists.SelectMany(t => t.Languages).Distinct().Select(s => new Language
-            {
-                DisplayName = languageFile.TranslateLanguage(s),
-                Name = s,
-                Set = false
-            }).OrderBy(s => s.DisplayName).ThenBy(s => s.Name).ToArray();
+            var languages = therapists.SelectMany(t => t.Languages)
+                                      .Distinct()
+                                      .Select(s => new Language
+                                      {
+                                          DisplayName = languageFile.TranslateLanguage(s),
+                                          Name = s,
+                                          Set = false
+                                      })
+                                      .OrderBy(s => s.DisplayName)
+                                      .ThenBy(s => s.Name)
+                                      .ToArray();
 
             var qualifications = new List<QualificationEntry>();
             foreach (var therapist in therapists)
@@ -98,7 +117,6 @@ namespace PsychoAssist
 
             Languages = new ReadOnlyCollection<Language>(languages);
             Qualifications = new ReadOnlyCollection<QualificationEntry>(qualifications.OrderBy(q => q.DisplayName).ThenBy(q => q.DisplayCategory).ToList());
-
         }
 
         public bool Allows(Therapist therapist)
@@ -108,10 +126,34 @@ namespace PsychoAssist
             if (Gender == Gender.Female && therapist.Gender == Gender.Male)
                 return false;
 
-            if (UserLocation != null && MaxDistanceInMeter > 0 && UserLocation != GPSLocation.Zero)
+            if (!GPSLocation.IsNullOrSpecial(UserLocation))
             {
-                var distance = therapist.Offices.Min(o => o.Location - UserLocation);
-                if (distance > MaxDistanceInMeter)
+                double minDistance = therapist.Offices.Min(o => o.Location - UserLocation);
+                if (minDistance > MaxDistanceInMeter)
+                    return false;
+            }
+
+            var selectedLanguages = Languages.Where(l => l.Set).ToArray();
+            if (selectedLanguages.Any())
+            {
+                var intersectedLanguages = therapist.Languages.Select(s => s.ToLower()).Intersect(selectedLanguages.Select(l => l.Name.ToLower())).ToArray();
+                if (!intersectedLanguages.Any())
+                    return false;
+            }
+
+            var selectedQualifications = Qualifications.Where(l => l.Set).ToArray();
+            if (selectedQualifications.Any())
+            {
+                var intersectedQualifications = therapist.Qualifications.SelectMany(s => s.Content).Select(s => s.ToLower()).Intersect(selectedQualifications.Select(l => l.Name.ToLower())).ToArray();
+                if (!intersectedQualifications.Any())
+                    return false;
+            }
+
+            var descriptionText = therapist.GetDescriptionText().ToLower();
+            if (!string.IsNullOrEmpty(FreeTextSearch))
+            {
+                var keywords = FreeTextSearch.Split(' ');
+                if (!keywords.All(k => descriptionText.Contains(k.ToLower())))
                     return false;
             }
 
