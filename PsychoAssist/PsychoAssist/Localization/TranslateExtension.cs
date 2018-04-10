@@ -15,7 +15,7 @@ namespace PsychoAssist.Localization
             if (Text == null)
                 return "";
 
-            var translation = App.Instance.LanguageFile.GetString(Text);
+            var translation = App.Instance.AppState.LanguageFile.GetString(Text);
 
             if (translation == null)
             {

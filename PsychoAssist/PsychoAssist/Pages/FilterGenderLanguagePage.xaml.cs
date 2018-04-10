@@ -55,7 +55,7 @@ namespace PsychoAssist.Pages
             IEnumerable<Therapist> therapists;
             try
             {
-                therapists = await App.Instance.TherapistCollection.FilterAsync(filter);
+                therapists = await App.Instance.AppState.TherapistCollection.FilterAsync(filter);
             }
             finally
             {

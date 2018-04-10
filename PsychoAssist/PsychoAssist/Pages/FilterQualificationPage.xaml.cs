@@ -32,7 +32,7 @@ namespace PsychoAssist.Pages
         private void NextButtonClicked(object sender, EventArgs e)
         {
             var filter = (TherapistFilter)BindingContext;
-            var therapists = App.Instance.TherapistCollection.AllTherapists.Where(t => filter.Allows(t));
+            var therapists = App.Instance.AppState.TherapistCollection.AllTherapists.Where(t => filter.Allows(t));
             var filteredTherapistPage = new FilteredTherapistPage(filter, therapists);
             App.Instance.PushPage(filteredTherapistPage);
         }

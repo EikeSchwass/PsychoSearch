@@ -28,11 +28,31 @@ namespace PsychoAssist.Pages
             return App.Instance.PopPage();
         }
 
+        protected override void OnAppearing()
+        {
+            ListView.SelectedItem = null;
+            base.OnAppearing();
+        }
+
+        protected override void OnDisappearing()
+        {
+            ListView.SelectedItem = null;
+            base.OnDisappearing();
+        }
+
         private void TherapistTapped(object sender, EventArgs e)
         {
             var imageCell = (ImageCell)sender;
             var therapist = (Therapist)imageCell.BindingContext;
-            var therapistPage = new TherapistPage(therapist);
+
+            var therapistVM = new TherapistVM
+            {
+                IsStarred = App.Instance.AppState.TherapistCollection.StarredTherapists.Contains(therapist),
+                Therapist = therapist
+            };
+
+
+            var therapistPage = new TherapistPage(therapistVM);
             App.Instance.PushPage(therapistPage);
         }
     }

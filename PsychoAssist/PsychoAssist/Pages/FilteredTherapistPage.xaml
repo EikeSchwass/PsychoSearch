@@ -15,7 +15,7 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid VerticalOptions="Fill">
-            <ListView ItemsSource="{Binding}">
+            <ListView ItemsSource="{Binding}" x:Name="ListView">
                 <ListView.GestureRecognizers>
                     <PanGestureRecognizer />
                 </ListView.GestureRecognizers>

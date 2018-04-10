@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PsychoAssist.Pages
@@ -10,12 +11,13 @@ namespace PsychoAssist.Pages
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
+            TextLabel.Text = App.Instance.AppState.LanguageFile.GetString("welcomeText", Environment.NewLine);
         }
 
-        private async void Button_Clicked(object sender, System.EventArgs e)
+        private void Button_Clicked(object sender, EventArgs e)
         {
-            App.Instance.DataStorage.SaveValue("welcomepageshown", "true");
-            await Navigation.PopAsync();
+            App.Instance.AppState.DataStorage.SaveValue("welcomepageshown", "true");
+            App.Instance.PopPage();
         }
     }
 }

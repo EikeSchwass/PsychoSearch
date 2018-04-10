@@ -27,7 +27,7 @@ namespace PsychoAssist.Localization
                     return translations[cultureInfo.Name.ToLower()];
                 if (translations.ContainsKey(cultureInfo.TwoLetterISOLanguageName.ToLower()))
                     return translations[cultureInfo.TwoLetterISOLanguageName.ToLower()];
-                return translations[""];
+                return translations["en-us"];
             }
             catch (Exception e)
             {
@@ -35,6 +35,14 @@ namespace PsychoAssist.Localization
                 return "KEY NOT FOUND";
             }
         }
+
+        public string GetString(string key, params object[] parameters)
+        {
+            var s = GetString(key);
+            var result = String.Format(s, parameters);
+            return result;
+        }
+
         public string TranslateCategory(string category)
         {
             return category;

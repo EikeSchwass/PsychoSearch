@@ -81,7 +81,7 @@ namespace PsychoAssist
         public TherapistFilter(IEnumerable<Therapist> allTherapists)
         {
             var therapists = allTherapists.ToArray();
-            var languageFile = App.Instance.LanguageFile;
+            var languageFile = App.Instance.AppState.LanguageFile;
             var languages = therapists.SelectMany(t => t.Languages)
                                       .Distinct()
                                       .Select(s => new Language

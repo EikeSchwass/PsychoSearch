@@ -1,16 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <strings>
   <entry key="welcome">
-    <value locale="en-us">Welcome</value>
-    <value locale="de-de">Willkommen</value>
+    <value locale="en-us">Welcome/Help</value>
+    <value locale="de-de">Willkommen/Hilfe</value>
   </entry>
   <entry key="welcomeText">
-    <value locale="en-us">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at. Consequat id porta nibh venenatis cras sed felis eget velit. Id volutpat lacus laoreet non curabitur gravida arcu ac. In dictum non consectetur a erat. Sit amet venenatis urna cursus. Id porta nibh venenatis cras sed felis eget velit aliquet. Sit amet venenatis urna cursus eget nunc scelerisque. Tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. A lacus vestibulum sed arcu non odio. Est velit egestas dui id ornare. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Consequat id porta nibh venenatis cras sed felis eget velit. Lectus nulla at volutpat diam ut venenatis tellus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Enim tortor at auctor urna nunc. Pretium fusce id velit ut tortor pretium viverra. Elit sed vulputate mi sit amet mauris commodo quis. Malesuada fames ac turpis egestas maecenas pharetra convallis. In hendrerit gravida rutrum quisque non.</value>
-    <value locale="de-de">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis at. Consequat id porta nibh venenatis cras sed felis eget velit. Id volutpat lacus laoreet non curabitur gravida arcu ac. In dictum non consectetur a erat. Sit amet venenatis urna cursus. Id porta nibh venenatis cras sed felis eget velit aliquet. Sit amet venenatis urna cursus eget nunc scelerisque. Tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. A lacus vestibulum sed arcu non odio. Est velit egestas dui id ornare. Pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus. Consequat id porta nibh venenatis cras sed felis eget velit. Lectus nulla at volutpat diam ut venenatis tellus in. Ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Enim tortor at auctor urna nunc. Pretium fusce id velit ut tortor pretium viverra. Elit sed vulputate mi sit amet mauris commodo quis. Malesuada fames ac turpis egestas maecenas pharetra convallis. In hendrerit gravida rutrum quisque non.</value>
+    <value locale="en-us">Some things in advance:{0}-This is no official app of the 'Kassenärtzlichen Vereinigung Niedersachsen (KVN)'.{0}-This app was developed by an unpaid student in his free time.{0}No ads!{0}-The therapists are stored in this app, so no internet connection required{0}-If this app has helped you find a therapist, please consider donating a small amount. I would appreciate that a lot :){0}{0}Making an appointment with a therapist is quite difficult. Most therapsists are only reachable a few hours a week. Furthermore not all therapists offer all therapy options, so finding a good match is hard. This app tries to help with these problems.{0}The search function is pretty robust so you can combine different aspects, such as location and type of therapy. However you need to check your spelling and the keywords need to be entered in german (use a translation website if you need to). By providing your location the app will filter therapists by the distance to your current location. If your therapist should speak a language besides German you can select languages, and then only therapists that speak one of those languages will be displayed. Feel free to combine the filtering options!{0}On the result page your can navigate to a specfic therapist by tapping on them. In the detailed view that will open you can see all information the app has stored about this therapist. You can also star them or retrieve a notification the next time the therapist is reachable via telephone.{0}I hope this app helps you to find a therapist!{0}{0}The data for this app was retrieved from the website of the KVN. Unfortunately that means that only therapists from lower saxony (Niedersachsen) are stored in the local database. There is no German-wide database with all therapists, so I had to manually extract them from the website, which is very time consuming. So for now only lower saxony is supported. Sorry!</value>
+    <value locale="de-de">Einige Sachen vorweg:{0}-Dies ist keine offizielle App von der Kassenärtzlichen Vereinigung Niedersachsen.{0}-Die App wurde ehrenamtlich von einem einzigen Studenten entwickelt.{0}-Keine Werbung!{0}-Keine Informationen verlassen diese App. Alles was Sie eingeben oder auswählen wird an niemanden in irgendeiner Form weitergegeben.{0}-Die Therapeuten sind in der App gespeichert, Sie brauchen kein Internet.{0}-Wenn Ihnen die App bei der Therapieplatzsuche geholfen hat, würde ich mich über eine kleine Spende sehr freuen :){0}{0}Einen Therapieplatz finden ist nicht einfach. Viele Therapeuten sind nur wenige Stunden pro Woche erreichbar und nicht jeder Therapeut bietet das Behandlungskonzept an, was man für seine Beschwerden bevorzugt. Diese App versucht da eine Hilfe zu sein.{0}Die Suchfunktion in der App durchsucht alle Informationen, die zu den Therapeuten vorliegen. Sie können also beispielsweise nach "Verhalten Hannover" suchen und bekommen dann alle Therapeuten aus Hannover, die Verhaltenstherapie anbieten angezeigt. Sie können aber auch Ihren Standort angeben und die App findet dann alle Theurapeuten, die in einem festgelegten Umfeld angesiedelt sind. Wenn Sie einen Therapeuten möchten, der eine bestimmte Fremdsprache spricht, können Sie auch dies einstellen (wenn Sie mehrere Sprachen auswählen, muss ein Therapeut mindestends eine davon beherrschen).{0}Alle diese Filter werden miteinander kombiniert. Sie können also zum Beispiel nach "Jugendtheraphie" suchen, Ihren Standort bestimmen und nur weibliche Therapeuten, die Italienisch sprechen auswählen.{0}Wenn Sie in der Ergebnisliste auf einen Therapeut tippen wird dieser im Detail angezeigt. Dort haben Sie die Möglichkeit den Therapeuten zu favorisieren und sich erinnern zu lassen, sobald dieser wieder per Telefon erreichbar ist.{0}Ich hoffe diese Funktionen vereinfachen Ihre Suche, sodass Sie zügig einen Therapieplatz finden können.{0}{0}Die Daten für diese App stammen von der Webseite der Kassenärtzlichen Vereinigung Niedersachsen (KVN). Dementsprechend sind bis jetzt auch nur Ärzte in Niedersachsen vertreten. Es gibt leider keine bundesweite Liste aller Therapeuten und da ich diese App ehrenamtlich in meiner Freizeit neben dem Studium entwickelt habe, hatte ich schlichtweg nicht die Zeit andere Bundesländer mit einzubeziehen. Sorry :/
+	</value>
+  </entry>
+  <entry key="donationthanks">
+    <value locale="en-us">Thank your very much! :)</value>
+    <value locale="de-de">Vielen Lieben Dank! :)</value>
+  </entry>
+  <entry key="donationdescription">
+    <value locale="en-us">Donation</value>
+    <value locale="de-de">Spende</value>
   </entry>
   <entry key="startPageHeader">
     <value locale="en-us">Therapy Finder</value>
     <value locale="de-de">Therapieplatz Assistent</value>
+  </entry>
+  <entry key="help">
+    <value locale="en-us">Help</value>
+    <value locale="de-de">Hilfe</value>
   </entry>
   <entry key="browseTherapistsButton">
     <value locale="en-us">Browse Therapists</value>
@@ -132,6 +145,34 @@
     <value locale="en-us">Next</value>
     <value locale="de-de">Weiter</value>
   </entry>
+  <entry key="notify">
+    <value locale="en-us">Notify Me!</value>
+    <value locale="de-de">Erinnere Mich!</value>
+  </entry>
+  <entry key="notifyheader">
+    <value locale="en-us">Notification</value>
+    <value locale="de-de">Erinnerung</value>
+  </entry>
+  <entry key="notifybody">
+    <value locale="en-us">The app will create a reminder in your calendar app, when this therapists is reachable via telephone. Are you ok with that?</value>
+    <value locale="de-de">Die App wird eine Erinnerung im Kalender anlegen, wenn dieser Therapeut das nächste mal telefonisch erreichbar ist. Ist das in Ordnung?</value>
+  </entry>
+  <entry key="yes">
+    <value locale="en-us">Yes</value>
+    <value locale="de-de">Ja</value>
+  </entry>
+  <entry key="no">
+    <value locale="en-us">No</value>
+    <value locale="de-de">Nein</value>
+  </entry>
+  <entry key="caltitle">
+    <value locale="en-us">Therapist {0} is reachable</value>
+    <value locale="de-de">Therapeut {0} ist erreichbar</value>
+  </entry>
+  <entry key="caldescription">
+    <value locale="en-us">Telephonenumber: {0}</value>
+    <value locale="de-de">Telefonnummer: {0}</value>
+  </entry>
   <entry key="monday">
     <value locale="en-us">Monday</value>
     <value locale="de-de">Montag</value>
@@ -211,5 +252,13 @@
   <entry key="contacttimes">
     <value locale="en-us">Contact times</value>
     <value locale="de-de">Sprechzeiten</value>
+  </entry>
+  <entry key="starredmessage">
+    <value locale="en-us">Therapist starred</value>
+    <value locale="de-de">TherupeutIn favorisiert</value>
+  </entry>
+  <entry key="unstarredmessage">
+    <value locale="en-us">Therapist unstarred</value>
+    <value locale="de-de">TherapeutIn entfavorisiert</value>
   </entry>
 </strings>

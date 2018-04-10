@@ -11,13 +11,13 @@ namespace PsychoAssist
         {
             var location = (GPSLocation)value;
             if (location == null)
-                return App.Instance.LanguageFile.GetString("locationnull");
+                return App.Instance.AppState.LanguageFile.GetString("locationnull");
 
             if (Equals(location, GPSLocation.Zero))
-                return App.Instance.LanguageFile.GetString("locationnotfound");
+                return App.Instance.AppState.LanguageFile.GetString("locationnotfound");
 
             if (Equals(location, GPSLocation.One))
-                return App.Instance.LanguageFile.GetString("locationloading");
+                return App.Instance.AppState.LanguageFile.GetString("locationloading");
 
             return location.ToString();
         }

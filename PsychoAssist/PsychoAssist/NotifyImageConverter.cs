@@ -1,18 +1,15 @@
-using System;
+﻿using System;
 using System.Globalization;
-using PsychoAssist.Core;
 using Xamarin.Forms;
 
 namespace PsychoAssist
 {
-    public class GenderLanguageConverter : IValueConverter
+    public class NotifyImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var gender = (Gender)value;
-            return App.Instance.AppState.LanguageFile.TranslateGender(gender);
+            return null;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

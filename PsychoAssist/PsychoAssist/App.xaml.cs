@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using Android.Content;
 using PsychoAssist.Core;
-using PsychoAssist.Localization;
 using PsychoAssist.Pages;
 using Xamarin.Forms;
 
@@ -13,29 +9,26 @@ namespace PsychoAssist
 {
     public partial class App
     {
-        private double GPSAccuracy { get; set; } = double.MinValue;
         public static App Instance { get; private set; }
-        public IApplicationDataStorage DataStorage { get; }
+
         public Action<Intent> StartActivity { get; }
-        public LanguageFile LanguageFile { get; }
-        public TherapistCollection TherapistCollection { get; } = new TherapistCollection();
+        public AppState AppState { get; }
+        public Context Context { get; }
 
         private Stack<Page> Pages { get; } = new Stack<Page>();
 
-        public App(IApplicationDataStorage dataStorage, Action<Intent> startActivity)
+        public App(AppState appState,Action<Intent> startActivity, Context context)
         {
             if (Instance != null)
                 throw new InvalidOperationException("Only one App can exists at a time!");
             Instance = this;
-            DataStorage = dataStorage;
+            AppState = appState;
             StartActivity = startActivity;
+            Context = context;
 
             InitializeComponent();
 
-            var languages = LoadLanguages();
-
-            LanguageFile = new LanguageFile(languages);
-            MainPage = new StartPage(TherapistCollection.AllTherapists);
+            MainPage = new StartPage(appState.TherapistCollection.AllTherapists);
             Pages.Push(MainPage);
         }
 
@@ -123,17 +116,6 @@ namespace PsychoAssist
 
         protected override void OnStart() { }
 
-        private string LoadLanguages()
-        {
-            var assembly = Assembly.GetAssembly(typeof(App));
-            var manifestResourceNames = assembly.GetManifestResourceNames();
-            var manifestResourceStream = assembly.GetManifestResourceStream(manifestResourceNames.Single(r => r.Contains("Strings.xml")));
-            if (manifestResourceStream == null)
-                throw new LanguageResourceNotFoundException();
-            using (var sr = new StreamReader(manifestResourceStream))
-            {
-                return sr.ReadToEnd();
-            }
-        }
+
     }
 }

@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)AppState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Address.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\ContactTime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Core\Gender.cs" />
@@ -33,6 +34,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Localization\Localize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LocationIsNullConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MeterConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NotifyImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\BrowseTherapistsPage.xaml.cs">
       <DependentUpon>BrowseTherapistsPage.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -70,9 +72,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Localization\TranslateExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\ILocalize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)QualificationEntry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StarredImageConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StretchConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TherapistCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TherapistFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TherapistVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Localization\Strings.xml" />

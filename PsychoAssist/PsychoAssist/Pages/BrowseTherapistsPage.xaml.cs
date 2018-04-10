@@ -78,8 +78,8 @@ namespace PsychoAssist.Pages
         private async void SearchButtonClicked(object sender, EventArgs e)
         {
             var filter = (TherapistFilter)BindingContext;
-            var therapistCollection = App.Instance.TherapistCollection;
-            var languageFile = App.Instance.LanguageFile;
+            var therapistCollection = App.Instance.AppState.TherapistCollection;
+            var languageFile = App.Instance.AppState.LanguageFile;
             if (filter.UserLocation == null || filter.UserLocation == GPSLocation.Zero)
             {
                 var accepted = await DisplayAlert(languageFile.GetString("nolocationtitle"), languageFile.GetString("nolocationmessage"), languageFile.GetString("nolocationaccept"), languageFile.GetString("nolocationcancel"));

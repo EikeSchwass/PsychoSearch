@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace PsychoAssist
         public static string GetDescriptionText(this Therapist therapist)
         {
             var stringBuilder = new StringBuilder();
-            var languageFile = App.Instance.LanguageFile;
+            var languageFile = App.Instance.AppState.LanguageFile;
 
             var qualification = string.Join(",", therapist.Qualifications.SelectMany(q => q.Content).Select(q => languageFile.TranslateCategory(q.ToLower())));
             var fullName = therapist.FullName;
@@ -33,6 +34,40 @@ namespace PsychoAssist
 
             var result = stringBuilder.ToString();
             return result;
+        }
+
+        public static (long startTime, long endTime, TelefoneNumber number) GetNextReachableTime(this Therapist therapist)
+        {
+            var now = DateTime.Now;
+
+            var nowMillies = (int)now.DayOfWeek * TimeSpan.TicksPerDay + now.TimeOfDay.Ticks;
+            var contactTimes = therapist.Offices.SelectMany(o => o.ContactTimes).ToList();
+
+            var minMillies = long.MaxValue;
+            var nextDateTime = 0L;
+            var nextDateTimeEnd = 0L;
+            TelefoneNumber number = default(TelefoneNumber);
+
+            foreach (var contactTime in contactTimes)
+            {
+                foreach (var officeHour in contactTime.OfficeHours)
+                {
+                    var fromTimeOfDay = officeHour.From.TimeOfDay;
+                    int dayOfWeek = (int)officeHour.DayOfWeek;
+                    if (dayOfWeek < (int)now.DayOfWeek)
+                        dayOfWeek += 7;
+                    var contactMillies = dayOfWeek * TimeSpan.TicksPerDay + fromTimeOfDay.Ticks;
+                    if (contactMillies < minMillies)
+                    {
+                        number = contactTime.TelefoneNumber;
+                        minMillies = contactMillies;
+                        nextDateTime = now.Ticks + (contactMillies - nowMillies);
+                        nextDateTimeEnd = nextDateTime + (officeHour.To - officeHour.From).Ticks;
+                    }
+                }
+            }
+
+            return (nextDateTime, nextDateTimeEnd, number);
         }
 
         public static string GetDescriptionText(this Office office)
@@ -60,7 +95,7 @@ namespace PsychoAssist
         public static string GetDescriptionText(this OfficeHour officeHour)
         {
             var stringBuilder = new StringBuilder();
-            var languageFile = App.Instance.LanguageFile;
+            var languageFile = App.Instance.AppState.LanguageFile;
 
             var dayOfWeek = languageFile.TranslateDayOfWeek(officeHour.DayOfWeek);
             var hourFrom = officeHour.From.ToString(CultureInfo.InvariantCulture);

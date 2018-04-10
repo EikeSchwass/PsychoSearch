@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Android.Content;
+using Android.Provider;
+using Android.Widget;
+using Java.Util;
 using PsychoAssist.Core;
 using PsychoAssist.Localization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using TimeZone = Java.Util.TimeZone;
 using Uri = Android.Net.Uri;
 
 namespace PsychoAssist.Pages
@@ -13,16 +17,16 @@ namespace PsychoAssist.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TherapistPage
     {
-        public Therapist Therapist { get; }
-        public LanguageFile LanguageFile => App.Instance.LanguageFile;
+        public TherapistVM Therapist { get; }
+        public LanguageFile LanguageFile => App.Instance.AppState.LanguageFile;
         private static Color FadedBlueGray { get; } = Color.FromHex("aa6f6f9f");
         private static Color BlueGray { get; } = Color.FromHex("6f6f9f");
         private static Color Blue { get; } = Color.CornflowerBlue;
         private static Color HeadlineColor { get; } = Color.CornflowerBlue; // Color.FromHex("ff4184");
-        private static Color ContainerBGColor { get; } = Color.FromHex("dde4f0");
-        private static Color InnerBGColor { get; } = Color.FromHex("e9ebf0");
+        private static Color ContainerBGColor { get; } = Color.FromHex("e5f1ff");
+        private static Color InnerBGColor { get; } = Color.FromHex("ffffff");
 
-        public TherapistPage(Therapist therapist)
+        public TherapistPage(TherapistVM therapist)
         {
             InitializeComponent();
             BindingContext = therapist;
@@ -45,7 +49,7 @@ namespace PsychoAssist.Pages
         private TableSection CreateLanguageTableSection()
         {
             var tableSection = new TableSection(LanguageFile.GetString("language"));
-            var textCells = Therapist.Languages.Select(l => LanguageFile.TranslateLanguage(l)).Select(l => new TextCell { Text = l, TextColor = BlueGray }).ToArray();
+            var textCells = Therapist.Therapist.Languages.Select(l => LanguageFile.TranslateLanguage(l)).Select(l => new TextCell { Text = l, TextColor = BlueGray }).ToArray();
             if (textCells.Any())
                 tableSection.Add(textCells);
             else
@@ -56,28 +60,30 @@ namespace PsychoAssist.Pages
         private Cell CreateOfficeCell(Office office)
         {
             var containerCell = new ViewCell();
-            var containerStack = new StackLayout { BackgroundColor = ContainerBGColor };
-            var stackLayout = new StackLayout { Margin = new Thickness(20, 0, 0, 4), BackgroundColor = InnerBGColor };
+            var containerStack = new StackLayout();
+            var stackLayout = new StackLayout { Margin = new Thickness(20, 0, 0, 0), BackgroundColor = InnerBGColor };
             containerCell.View = containerStack;
 
             {
+                Grid grid = new Grid() { BindingContext = ContainerBGColor };
                 var fontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
                 var label = new Label { Text = office.Address.FullAddress.Replace(Environment.NewLine, ""), Margin = new Thickness(10, 0, 0, 0), FontAttributes = FontAttributes.Bold, TextColor = Color.CornflowerBlue, FontSize = fontSize };
                 var gestureRecognizer = new TapGestureRecognizer();
-                gestureRecognizer.Tapped += (o, e) => OpenMap(office.Location, Therapist.FullName);
+                gestureRecognizer.Tapped += (o, e) => OpenMap(office.Location, Therapist.Therapist.FullName);
                 label.GestureRecognizers.Add(gestureRecognizer);
-                containerStack.Children.Add(label);
+                grid.Children.Add(label);
+                containerStack.Children.Add(grid);
             }
             containerStack.Children.Add(stackLayout);
             if (office.TelefoneNumbers.Any())
             {
-                var label = new Label { Text = LanguageFile.GetString("contact"), TextColor = HeadlineColor, FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
+                var label = new Label { Text = LanguageFile.GetString("contact"), FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
                 stackLayout.Children.Add(label);
 
                 foreach (var telefoneNumber in office.TelefoneNumbers)
                 {
                     var text = $"{LanguageFile.TranslateContactType(telefoneNumber.Type)}: {telefoneNumber.Number}";
-                    var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label));
+                    var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)) + 2;
                     var phoneLabel = new Label { Text = text, TextColor = Blue, FontSize = fontSize };
                     var tapGestureRecognizer = new TapGestureRecognizer();
                     tapGestureRecognizer.Tapped += (o, e) => OpenTelefoneNumber(telefoneNumber);
@@ -88,7 +94,7 @@ namespace PsychoAssist.Pages
 
             if (office.OfficeHours.Any())
             {
-                var label = new Label { Text = LanguageFile.GetString("officehours"), TextColor = HeadlineColor, FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
+                var label = new Label { Text = LanguageFile.GetString("officehours"), FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
                 stackLayout.Children.Add(label);
 
                 var grid = new Grid { Margin = new Thickness(20, 0, 0, 0) };
@@ -100,7 +106,7 @@ namespace PsychoAssist.Pages
                     grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                     var translateDayOfWeek = LanguageFile.TranslateDayOfWeek(officeHour.DayOfWeek);
                     var text = $"{officeHour.From:HH:mm} - {officeHour.To:HH:mm}";
-                    var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label));
+                    var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)) + 2;
                     var dayLabel = new Label { Text = translateDayOfWeek, TextColor = BlueGray, FontSize = fontSize };
                     var timeLabel = new Label { Text = text, TextColor = BlueGray, FontSize = fontSize };
                     grid.Children.Add(dayLabel);
@@ -114,14 +120,14 @@ namespace PsychoAssist.Pages
 
             if (office.ContactTimes.Any())
             {
-                var label = new Label { Text = LanguageFile.GetString("contacttimes"), TextColor = HeadlineColor, FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
+                var label = new Label { Text = LanguageFile.GetString("contacttimes"), FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)) };
 
                 stackLayout.Children.Add(label);
                 foreach (var contactTime in office.ContactTimes)
                 {
                     {
                         var text = $"{LanguageFile.TranslateContactType(contactTime.TelefoneNumber.Type)}: {contactTime.TelefoneNumber.Number}";
-                        var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label));
+                        var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)) + 2;
                         var phoneLabel = new Label { Text = text, TextColor = Blue, FontSize = fontSize };
                         var tapGestureRecognizer = new TapGestureRecognizer();
                         tapGestureRecognizer.Tapped += (o, e) => OpenTelefoneNumber(contactTime.TelefoneNumber);
@@ -140,7 +146,7 @@ namespace PsychoAssist.Pages
                         grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
                         var translateDayOfWeek = LanguageFile.TranslateDayOfWeek(officeHour.DayOfWeek);
                         var text = $"{officeHour.From:HH:mm} - {officeHour.To:HH:mm}";
-                        var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label));
+                        var fontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)) + 2;
                         var dayLabel = new Label { Text = translateDayOfWeek, TextColor = BlueGray, FontSize = fontSize };
                         var timeLabel = new Label { Text = text, TextColor = BlueGray, FontSize = fontSize };
                         grid.Children.Add(dayLabel);
@@ -164,7 +170,7 @@ namespace PsychoAssist.Pages
 
             IEnumerable<Cell> CreateOfficeCells()
             {
-                foreach (var office in Therapist.Offices.Distinct())
+                foreach (var office in Therapist.Therapist.Offices.Distinct())
                 {
                     yield return CreateOfficeCell(office);
                 }
@@ -180,8 +186,8 @@ namespace PsychoAssist.Pages
             var tableSection = new TableSection(LanguageFile.GetString("contactheader"));
 
             IEnumerable<TextCell> textCells;
-            if (Therapist.TelefoneNumbers.Any())
-                textCells = Therapist.TelefoneNumbers.Select(GetTextCellFromTelefoneNumber);
+            if (Therapist.Therapist.TelefoneNumbers.Any())
+                textCells = Therapist.Therapist.TelefoneNumbers.Select(GetTextCellFromTelefoneNumber);
             else
                 textCells = Enumerable.Repeat(new TextCell { Text = LanguageFile.GetString("nocontactinformation"), TextColor = FadedBlueGray }, 1);
             tableSection.Add(textCells);
@@ -191,7 +197,7 @@ namespace PsychoAssist.Pages
 
         private IEnumerable<TableSection> CreateQualificationTableSections()
         {
-            var groupedQualifications = Therapist.Qualifications.GroupBy(q => q.Category).ToList();
+            var groupedQualifications = Therapist.Therapist.Qualifications.GroupBy(q => q.Category).ToList();
             foreach (var groupedQualification in groupedQualifications)
             {
                 var qualiesInGroup = groupedQualification.SelectMany(g => g.Content).Select(q => new TextCell { Text = LanguageFile.TranslateQualityName(q), TextColor = BlueGray }).ToList();
@@ -228,13 +234,14 @@ namespace PsychoAssist.Pages
 
         private void KVNLinkTapped(object sender, EventArgs e)
         {
-            LaunchWebsite(Therapist.KVNWebsite);
+            LaunchWebsite(Therapist.Therapist.KVNWebsite);
         }
 
         private void LaunchWebsite(string website)
         {
             Device.OpenUri(new System.Uri(website, UriKind.Absolute));
         }
+
         private void OpenMap(GPSLocation officeLocation, string label)
         {
             var location = officeLocation.ToString().Replace(',', '.').Replace('|', ',');
@@ -261,6 +268,83 @@ namespace PsychoAssist.Pages
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void StarImageTapped(object sender, EventArgs e)
+        {
+            Therapist.IsStarred = !Therapist.IsStarred;
+            var toast = Toast.MakeText(App.Instance.Context, "", ToastLength.Short);
+            if (Therapist.IsStarred)
+            {
+                App.Instance.AppState.TherapistCollection.StarredTherapists.Add(Therapist.Therapist);
+                toast.SetText(App.Instance.AppState.LanguageFile.GetString("starredmessage"));
+            }
+            else
+            {
+                App.Instance.AppState.TherapistCollection.StarredTherapists.Remove(Therapist.Therapist);
+                toast.SetText(App.Instance.AppState.LanguageFile.GetString("unstarredmessage"));
+            }
+
+            toast.Show();
+        }
+
+        private async void NotifyImageTapped(object sender, EventArgs e)
+        {
+            var title = App.Instance.AppState.LanguageFile.GetString("notifyheader");
+            var message = App.Instance.AppState.LanguageFile.GetString("notifybody");
+            var yes = App.Instance.AppState.LanguageFile.GetString("yes");
+            var no = App.Instance.AppState.LanguageFile.GetString("no");
+            var anwser = await DisplayAlert(title, message, yes, no);
+            if (anwser)
+                CreateNotification();
+        }
+
+        private void CreateNotification()
+        {
+            string title = App.Instance.AppState.LanguageFile.GetString("caltitle", Therapist.Therapist.FullName);
+            var nextReachableTime = Therapist.Therapist.GetNextReachableTime();
+            string description = App.Instance.AppState.LanguageFile.GetString("caldescription", nextReachableTime.number.Number);
+            DateTime startDateTime = new DateTime(nextReachableTime.startTime);
+            DateTime endDateTime = new DateTime(nextReachableTime.endTime);
+            long start = GetAndroidMillis(startDateTime);
+            long end = GetAndroidMillis(endDateTime);
+
+            ContentValues cv = new ContentValues();
+            cv.Put(CalendarContract.Events.InterfaceConsts.Title, title);
+            cv.Put(CalendarContract.Events.InterfaceConsts.Description, description);
+            cv.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, 1);
+            cv.Put(CalendarContract.Events.InterfaceConsts.Dtstart, start);
+            cv.Put(CalendarContract.Events.InterfaceConsts.Dtend, end);
+            cv.Put(CalendarContract.Events.InterfaceConsts.CalendarId, 1);
+            cv.Put(CalendarContract.Events.InterfaceConsts.AccessLevel, 2);
+            cv.Put(CalendarContract.Events.InterfaceConsts.Availability, 1);
+            cv.Put(CalendarContract.Events.InterfaceConsts.IsOrganizer, 0);
+            cv.Put(CalendarContract.Events.InterfaceConsts.Status, 1);
+            cv.Put(CalendarContract.Events.InterfaceConsts.GuestsCanModify, 0);
+            cv.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, "UTC");
+
+            var cr = App.Instance.Context.ContentResolver;
+            var uri = cr.Insert(CalendarContract.Events.ContentUri, cv);
+            long eventId = long.Parse(uri.LastPathSegment);
+            String reminderUriString = "content://com.android.calendar/reminders";
+
+            ContentValues reminderValues = new ContentValues();
+
+            reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, eventId);
+            reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, 0);
+            reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Method, 1);
+            cr.Insert(Uri.Parse(reminderUriString), reminderValues);
+        }
+
+        private static long GetAndroidMillis(DateTime startDateTime)
+        {
+            var instance = Calendar.GetInstance(TimeZone.Default);
+            instance.Set(CalendarField.DayOfMonth, startDateTime.Day);
+            instance.Set(CalendarField.HourOfDay, startDateTime.Hour);
+            instance.Set(CalendarField.Minute, startDateTime.Minute);
+            instance.Set(CalendarField.Month, startDateTime.Month - 1);
+            instance.Set(CalendarField.Year, startDateTime.Year);
+            return instance.TimeInMillis;
         }
     }
 }

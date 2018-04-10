@@ -3,43 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:core="clr-namespace:PsychoAssist.Core;assembly=PsychoAssist.Android"
              xmlns:psychoAssist="clr-namespace:PsychoAssist;assembly=PsychoAssist.Android"
              xmlns:localization="clr-namespace:PsychoAssist.Localization;assembly=PsychoAssist.Android"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance {x:Type core:Therapist}}"
+             d:DataContext="{d:DesignInstance {x:Type psychoAssist:TherapistVM}}"
              x:Class="PsychoAssist.Pages.TherapistPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <psychoAssist:GenderImageConverter x:Key="GenderImageConverter" />
+            <psychoAssist:StarredImageConverter x:Key="StarredImageConverter" />
+            <psychoAssist:NotifyImageConverter x:Key="NotifyImageConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="32" />
+                <RowDefinition Height="1.5" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="8">
+            <Grid Grid.Row="0" BackgroundColor="CornflowerBlue">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="96" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="6" Source="{Binding Gender, Converter={StaticResource GenderImageConverter}}" />
-                <Label Grid.Row="0" Grid.Column="1" FontSize="Small" Text="{Binding Title}" Margin="1" />
-                <Label Grid.Row="1" Grid.Column="1" FontSize="Medium"  Text="{Binding FullName}" Margin="1" />
+                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Margin="24,12,12,6" Source="{Binding Therapist.Gender, Converter={StaticResource GenderImageConverter}}" />
+                <Label Grid.Row="0" Grid.Column="1" FontSize="Small" Text="{Binding Therapist.Title}" TextColor="Black" Margin="1" />
+                <Label Grid.Row="1" Grid.Column="1" FontSize="Medium"  Text="{Binding Therapist.FullName}" TextColor="Black" Margin="1" />
             </Grid>
-            <Label Grid.Row="1" FontSize="Small" TextColor="Blue" Text="{localization:Translate websiteheader}" Margin="4">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="KVNLinkTapped" />
-                </Label.GestureRecognizers>
-            </Label>
-            <TableView Grid.Row="2" HasUnevenRows="True">
+            <Grid Grid.Row="1" BackgroundColor="#9bc7ff" Margin="0,-8,0,-8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontSize="Small" TextColor="Blue" Text="{localization:Translate websiteheader}" Margin="8,2" VerticalOptions="CenterAndExpand">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="KVNLinkTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Button Grid.Column="1" Text="{localization:Translate notify}" Margin="8,2" Clicked="NotifyImageTapped" />
+                <Image Grid.Column="2" Source="{Binding IsStarred, Converter={StaticResource StarredImageConverter}}" Margin="24,8">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="StarImageTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+            <Grid Grid.Row="2" BackgroundColor="DimGray" />
+            <TableView Grid.Row="3" HasUnevenRows="True" Margin="0,-4,0,0" BackgroundColor="#ffffff">
                 <TableRoot x:Name="TableRoot" />
             </TableView>
         </Grid>
