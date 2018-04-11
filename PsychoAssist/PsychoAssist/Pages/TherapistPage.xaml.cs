@@ -301,9 +301,15 @@ namespace PsychoAssist.Pages
 
         private void CreateNotification()
         {
-            string title = App.Instance.AppState.LanguageFile.GetString("caltitle", Therapist.Therapist.FullName);
+            var languageFile = App.Instance.AppState.LanguageFile;
+            string title = languageFile.GetString("caltitle", Therapist.Therapist.FullName);
             var nextReachableTime = Therapist.Therapist.GetNextReachableTime();
-            string description = App.Instance.AppState.LanguageFile.GetString("caldescription", nextReachableTime.number.Number);
+            string description = languageFile.GetString("caldescription", nextReachableTime.number?.Number ?? languageFile.GetString("notelefone", Therapist.Therapist.KVNWebsite));
+            if (nextReachableTime.startTime == 0 || nextReachableTime.endTime == 0)
+            {
+                Toast.MakeText(App.Instance.Context, languageFile.GetString("notimeinfo"), ToastLength.Long).Show();
+                return;
+            }
             DateTime startDateTime = new DateTime(nextReachableTime.startTime);
             DateTime endDateTime = new DateTime(nextReachableTime.endTime);
             long start = GetAndroidMillis(startDateTime);
@@ -334,6 +340,8 @@ namespace PsychoAssist.Pages
             reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, 0);
             reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Method, 1);
             cr.Insert(Uri.Parse(reminderUriString), reminderValues);
+
+            Toast.MakeText(App.Instance.Context, languageFile.GetString("remindercreated", startDateTime.ToShortDateString(), startDateTime.ToShortTimeString()), ToastLength.Long).Show();
         }
 
         private static long GetAndroidMillis(DateTime startDateTime)

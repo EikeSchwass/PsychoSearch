@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Xamarin.Forms;
@@ -7,7 +8,7 @@ using Application = Android.App.Application;
 
 namespace PsychoAssist.Droid
 {
-    [Activity(Label = "PsychoAssist", Icon = "@drawable/logo", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "TherapieplatzFinder", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)
@@ -22,7 +23,14 @@ namespace PsychoAssist.Droid
             var androidDataStorage = new AndroidDataStorage();
             var appState = new AppState(ApplicationContext, androidDataStorage, StartActivity);
             var app = new App(appState, StartActivity, Application.Context);
-            LoadApplication(app);
+            try
+            {
+                LoadApplication(app);
+            }
+            catch (NullReferenceException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
         }
     }
 }

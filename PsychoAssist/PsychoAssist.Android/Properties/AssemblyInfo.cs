@@ -6,11 +6,11 @@ using Xamarin.Forms;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PsychoAssist.Android")]
+[assembly: AssemblyTitle("TherapieplatzFinder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PsychoAssist.Android")]
+[assembly: AssemblyProduct("TherapieplatzFinder")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -30,6 +30,8 @@ using Xamarin.Forms;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-// Add some common permissions, these can be removed if not needed
-[assembly: UsesPermission(Android.Manifest.Permission.Internet)]
-[assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
+#if DEBUG
+[assembly: Application(Debuggable = true, Label = "TherapieplatzFinder")]
+#else
+[assembly: Application(Debuggable=false, Label = "TherapieplatzFinder")]
+#endif

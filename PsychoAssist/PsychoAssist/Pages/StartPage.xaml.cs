@@ -40,6 +40,11 @@ namespace PsychoAssist.Pages
         {
             StarredListView.SelectedItem = null;
             base.OnAppearing();
+#if DEBUG
+            NostarredLabel.RemoveBinding(Label.TextProperty);
+            NostarredLabel.Text = "DEBUG";
+            NostarredLabel.TextColor = Color.Red;
+#endif
         }
 
         private void StarredTherapistTapped(object sender, EventArgs e)
@@ -65,7 +70,7 @@ namespace PsychoAssist.Pages
 
         private void DonateButtonClicked(object sender, EventArgs e)
         {
-            var toast = Toast.MakeText(App.Instance.Context, App.Instance.AppState.LanguageFile.GetString("donationthanks"), ToastLength.Short);
+            var toast = Toast.MakeText(App.Instance.Context, App.Instance.AppState.LanguageFile.GetString("donationthanks"), ToastLength.Long);
             string donationLink = GetDonationLink();
             Device.OpenUri(new Uri(donationLink, UriKind.Absolute));
             toast.Show();
@@ -73,13 +78,12 @@ namespace PsychoAssist.Pages
 
         private string GetDonationLink()
         {
-            ;
             string url = "";
 
             string business = "eike.stein@ewetel.net";  // your paypal email
             string description = WebUtility.UrlEncode(App.Instance.AppState.LanguageFile.GetString("donationdescription"));            // '%20' represents a space. remember HTML!
             string country = DependencyService.Get<ILocalize>().GetCurrentCultureInfo().TwoLetterISOLanguageName;                  // AU, US, etc.
-            string currency = "EUR";                 // AUD, USD, etc.
+            string currency = "EUR";
 
             url += "https://www.paypal.com/cgi-bin/webscr" +
                    "?cmd=" + "_donations" +

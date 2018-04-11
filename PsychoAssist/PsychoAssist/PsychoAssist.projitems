@@ -73,6 +73,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Localization\ILocalize.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)QualificationEntry.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StarredImageConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StarredVisibleConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StretchConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TherapistCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TherapistFilter.cs" />

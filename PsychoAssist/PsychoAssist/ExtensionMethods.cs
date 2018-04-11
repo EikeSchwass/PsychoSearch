@@ -42,6 +42,8 @@ namespace PsychoAssist
 
             var nowMillies = (int)now.DayOfWeek * TimeSpan.TicksPerDay + now.TimeOfDay.Ticks;
             var contactTimes = therapist.Offices.SelectMany(o => o.ContactTimes).ToList();
+            if (therapist.Offices.All(o => o.TelefoneNumbers.Any(t => t.Type == TelefoneNumber.TelefoneNumberType.Mobil || t.Type == TelefoneNumber.TelefoneNumberType.Telefon)))
+                contactTimes.AddRange(therapist.Offices.Select(o => new ContactTime { OfficeHours = o.OfficeHours, TelefoneNumber = o.TelefoneNumbers.FirstOrDefault(t => t.Type == TelefoneNumber.TelefoneNumberType.Mobil || t.Type == TelefoneNumber.TelefoneNumberType.Telefon) }).ToList());
 
             var minMillies = long.MaxValue;
             var nextDateTime = 0L;
@@ -56,12 +58,15 @@ namespace PsychoAssist
                     int dayOfWeek = (int)officeHour.DayOfWeek;
                     if (dayOfWeek < (int)now.DayOfWeek)
                         dayOfWeek += 7;
+                    if (dayOfWeek == (int)now.DayOfWeek && officeHour.To.TimeOfDay < now.TimeOfDay)
+                        dayOfWeek += 7;
                     var contactMillies = dayOfWeek * TimeSpan.TicksPerDay + fromTimeOfDay.Ticks;
+                    contactMillies -= nowMillies;
                     if (contactMillies < minMillies)
                     {
                         number = contactTime.TelefoneNumber;
                         minMillies = contactMillies;
-                        nextDateTime = now.Ticks + (contactMillies - nowMillies);
+                        nextDateTime = now.Ticks + contactMillies;
                         nextDateTimeEnd = nextDateTime + (officeHour.To - officeHour.From).Ticks;
                     }
                 }

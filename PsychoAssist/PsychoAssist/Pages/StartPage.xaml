@@ -9,6 +9,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <psychoAssist:GenderImageConverter x:Key="GenderImageConverter" />
+            <psychoAssist:StarredVisibleConverter x:Key="StarredVisibleConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
@@ -30,6 +31,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Label Grid.Row="3" Text="{localization:Translate nostars}" x:Name="NostarredLabel" VerticalOptions="Start" Margin="5" FontAttributes="Italic" TextColor="#888888" FontSize="Small" IsVisible="{Binding Path=AppState.TherapistCollection.StarredTherapists.Count,Converter={StaticResource StarredVisibleConverter}}" />
             <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
