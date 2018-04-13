@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.Content;
+using Android.OS;
 using PsychoAssist.Core;
 using PsychoAssist.Pages;
 using Xamarin.Forms;
@@ -12,18 +13,18 @@ namespace PsychoAssist
         public static App Instance { get; private set; }
 
         public Action<Intent> StartActivity { get; }
+        public Action<Intent, int, Bundle> StartActivityForResult { get; }
         public AppState AppState { get; }
         public Context Context { get; }
 
         private Stack<Page> Pages { get; } = new Stack<Page>();
 
-        public App(AppState appState,Action<Intent> startActivity, Context context)
+        public App(AppState appState,Action<Intent> startActivity, Action<Intent,int,Bundle> startActivityForResult, Context context)
         {
-            if (Instance != null)
-                throw new InvalidOperationException("Only one App can exists at a time!");
             Instance = this;
             AppState = appState;
             StartActivity = startActivity;
+            StartActivityForResult = startActivityForResult;
             Context = context;
 
             InitializeComponent();

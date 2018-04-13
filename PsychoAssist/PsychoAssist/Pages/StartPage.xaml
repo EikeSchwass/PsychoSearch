@@ -34,16 +34,14 @@
             <Label Grid.Row="3" Text="{localization:Translate nostars}" x:Name="NostarredLabel" VerticalOptions="Start" Margin="5" FontAttributes="Italic" TextColor="#888888" FontSize="Small" IsVisible="{Binding Path=AppState.TherapistCollection.StarredTherapists.Count,Converter={StaticResource StarredVisibleConverter}}" />
             <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Text="{localization:Translate help}" Margin="8,2" Clicked="HelpButtonClicked" />
-                <Image Grid.Column="1" Source="@drawable/donate" Margin="8,2" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="28">
-                    <Image.GestureRecognizers>
-                        <ClickGestureRecognizer Clicked="DonateButtonClicked" />
-                        <TapGestureRecognizer Tapped="DonateButtonClicked" />
-                    </Image.GestureRecognizers>
-                </Image>
+                <Button Grid.Column="1" Margin="8,2" Text="{localization:Translate supportdeveloper}" Clicked="DonateButtonClicked" BackgroundColor="#6c320f" TextColor="White" FontSize="Micro" />
+            </Grid>
+            <Grid x:Name="CoffeeGrid" Grid.Row="0" Grid.RowSpan="5" BackgroundColor="#bb000000" IsVisible="False">
+                <Image Source="@drawable/coffee" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="128" WidthRequest="128" />
             </Grid>
         </Grid>
     </ContentPage.Content>

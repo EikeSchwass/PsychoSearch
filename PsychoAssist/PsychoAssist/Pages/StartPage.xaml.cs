@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using Android.Widget;
+using Plugin.InAppBilling;
 using PsychoAssist.Core;
-using PsychoAssist.Localization;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Threading.Tasks;
+#if DEBUG
+#else
+using Plugin.InAppBilling.Abstractions;
+using System.Linq;
+#endif
 
 namespace PsychoAssist.Pages
 {
@@ -40,11 +45,6 @@ namespace PsychoAssist.Pages
         {
             StarredListView.SelectedItem = null;
             base.OnAppearing();
-#if DEBUG
-            NostarredLabel.RemoveBinding(Label.TextProperty);
-            NostarredLabel.Text = "DEBUG";
-            NostarredLabel.TextColor = Color.Red;
-#endif
         }
 
         private void StarredTherapistTapped(object sender, EventArgs e)
@@ -68,32 +68,71 @@ namespace PsychoAssist.Pages
             App.Instance.PushPage(new WelcomePage());
         }
 
-        private void DonateButtonClicked(object sender, EventArgs e)
+        private async void DonateButtonClicked(object sender, EventArgs e)
         {
-            var toast = Toast.MakeText(App.Instance.Context, App.Instance.AppState.LanguageFile.GetString("donationthanks"), ToastLength.Long);
-            string donationLink = GetDonationLink();
-            Device.OpenUri(new Uri(donationLink, UriKind.Absolute));
-            toast.Show();
-        }
+            const string coffeIDBackup = "alphacoffee";
+            const string coffeID = "coffee";
+            var languageFile = App.Instance.AppState.LanguageFile;
 
-        private string GetDonationLink()
-        {
-            string url = "";
+#if DEBUG
+#else
+            bool connected = false;
+            try
+            {
+                connected = await CrossInAppBilling.Current.ConnectAsync();
+            }
+            catch
+            {
+                // ignored
+            }
 
-            string business = "eike.stein@ewetel.net";  // your paypal email
-            string description = WebUtility.UrlEncode(App.Instance.AppState.LanguageFile.GetString("donationdescription"));            // '%20' represents a space. remember HTML!
-            string country = DependencyService.Get<ILocalize>().GetCurrentCultureInfo().TwoLetterISOLanguageName;                  // AU, US, etc.
-            string currency = "EUR";
+            if (!connected)
+            {
+                Toast.MakeText(App.Instance.Context, languageFile.GetString("connectionfailed"), ToastLength.Long).Show();
+                return;
+            }
 
-            url += "https://www.paypal.com/cgi-bin/webscr" +
-                   "?cmd=" + "_donations" +
-                   "&business=" + business +
-                   "&lc=" + country +
-                   "&item_name=" + description +
-                   "&currency_code=" + currency +
-                   "&bn=" + "PP%2dDonationsBF";
-            return url;
-
+#endif
+            try
+            {
+#if DEBUG
+#else
+                var products = (await CrossInAppBilling.Current.GetProductInfoAsync(ItemType.InAppPurchase, coffeID, coffeIDBackup))?.ToArray();
+                var coffee = products?.FirstOrDefault(p => p.ProductId == coffeID) ?? products?.FirstOrDefault(p => p.ProductId == coffeIDBackup) ?? products?.First();
+                var purchase = await CrossInAppBilling.Current.PurchaseAsync(coffee?.ProductId ?? coffeID, ItemType.InAppPurchase, "apppayload");
+                if (purchase != null)
+                {
+                    await CrossInAppBilling.Current.ConsumePurchaseAsync(purchase.ProductId, purchase.PurchaseToken);
+#endif
+                    Toast.MakeText(App.Instance.Context, languageFile.GetString("donationthanks"), ToastLength.Long).Show();
+                    try
+                    {
+                        IsEnabled = false;
+                        CoffeeGrid.IsVisible = true;
+                        await Task.Delay(5000);
+                    }
+                    finally
+                    {
+                        IsEnabled = true;
+                        CoffeeGrid.IsVisible = false;
+                    }
+#if DEBUG
+#else
+                }
+                else
+                {
+                    throw new NullReferenceException();
+                }
+#endif
+            }
+            catch
+            {
+                Toast.MakeText(App.Instance.Context, $"{languageFile.GetString("buyfailed")}", ToastLength.Long).Show();
+            }
+            finally
+            {
+                await CrossInAppBilling.Current.DisconnectAsync();
+            }
         }
     }
 }

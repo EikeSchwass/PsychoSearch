@@ -1,7 +1,10 @@
 ﻿using System;
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Plugin.CurrentActivity;
+using Plugin.InAppBilling;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using Application = Android.App.Application;
@@ -20,9 +23,11 @@ namespace PsychoAssist.Droid
 
             Forms.Init(this, bundle);
 
+            CrossCurrentActivity.Current.Activity = this;
+
             var androidDataStorage = new AndroidDataStorage();
             var appState = new AppState(ApplicationContext, androidDataStorage, StartActivity);
-            var app = new App(appState, StartActivity, Application.Context);
+            var app = new App(appState, StartActivity, StartActivityForResult, Application.Context);
             try
             {
                 LoadApplication(app);
@@ -31,6 +36,12 @@ namespace PsychoAssist.Droid
             {
                 System.Diagnostics.Debug.WriteLine(ex);
             }
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            InAppBillingImplementation.HandleActivityResult(requestCode, resultCode, data);
         }
     }
 }

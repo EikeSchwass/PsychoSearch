@@ -9,6 +9,18 @@
     <value locale="de-de">Einige Sachen vorweg:{0}-Dies ist keine offizielle App von der Kassenärtzlichen Vereinigung Niedersachsen.{0}-Die App wurde ehrenamtlich von einem einzigen Studenten entwickelt.{0}-Keine Werbung!{0}-Keine Informationen verlassen diese App. Alles was Sie eingeben oder auswählen wird an niemanden in irgendeiner Form weitergegeben.{0}-Die Therapeuten sind in der App gespeichert, Sie brauchen kein Internet.{0}-Wenn Ihnen die App bei der Therapieplatzsuche geholfen hat, würde ich mich über eine kleine Spende sehr freuen :){0}{0}Einen Therapieplatz finden ist nicht einfach. Viele Therapeuten sind nur wenige Stunden pro Woche erreichbar und nicht jeder Therapeut bietet das Behandlungskonzept an, was man für seine Beschwerden bevorzugt. Diese App versucht da eine Hilfe zu sein.{0}Die Suchfunktion in der App durchsucht alle Informationen, die zu den Therapeuten vorliegen. Sie können also beispielsweise nach "Verhalten Hannover" suchen und bekommen dann alle Therapeuten aus Hannover, die Verhaltenstherapie anbieten, angezeigt. Sie sollten jedoch nur Informationen eingeben, die Sie nicht an anderer Stelle spezifizieren können. Beispielsweise können Sie Ihren Standort mithilfe von GPS angeben und die App findet dann alle Theurapeuten, die in einem festgelegten Umfeld angesiedelt sind. Wenn Sie einen Therapeuten möchten, der eine bestimmte Fremdsprache spricht, können Sie auch dies einstellen (wenn Sie mehrere Sprachen auswählen, muss ein Therapeut mindestends eine davon beherrschen).{0}Alle diese Filter werden miteinander kombiniert. Sie können also zum Beispiel nach "Jugendtheraphie" suchen, Ihren Standort bestimmen und nur weibliche Therapeuten, die Italienisch sprechen auswählen.{0}Wenn Sie in der Ergebnisliste auf einen Therapeuten tippen, wird dieser im Detail angezeigt. Dort haben Sie die Möglichkeit den Therapeuten zu favorisieren und sich erinnern zu lassen, sobald dieser wieder per Telefon erreichbar ist.{0}Ich hoffe diese Funktionen vereinfachen Ihre Suche, sodass Sie zügig einen Therapieplatz finden können.{0}{0}Die Daten für diese App stammen von der Webseite der Kassenärtzlichen Vereinigung Niedersachsen (KVN). Dementsprechend sind bis jetzt auch nur Ärzte in Niedersachsen vertreten. Es gibt leider keine bundesweite Liste aller Therapeuten und da ich diese App ehrenamtlich in meiner Freizeit neben dem Studium entwickelt habe, hatte ich schlichtweg nicht die Zeit andere Bundesländer mit einzubeziehen. Sorry :/
 	</value>
   </entry>
+  <entry key="supportdeveloper">
+    <value locale="en-us">Buy Developer a coffee</value>
+    <value locale="de-de">Entwickler einen Kaffee kaufen</value>
+  </entry>
+  <entry key="buyfailed">
+    <value locale="en-us">Purchase aborted</value>
+    <value locale="de-de">Kauf abgebrochen</value>
+  </entry>
+  <entry key="connectionfailed">
+    <value locale="en-us">Connection failed</value>
+    <value locale="de-de">Verbindung fehlgeschlagen</value>
+  </entry>
   <entry key="nostars">
     <value locale="en-us">No therapists starred</value>
     <value locale="de-de">Keine Therapeuten favorisiert</value>
